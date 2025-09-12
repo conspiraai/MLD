@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MLD — Major League Dev</title>
+<meta name="description" content="MLD — Major League Dev. Meme coin for builders. Ship fast. Bonk bugs. PumpFun.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050607; --panel:#0b0f0b;
+    --neon-green:#00ff88; --neon-orange:#ff7f2a;
+    --muted:#9aa0a6; --glass: rgba(255,255,255,0.03);
+    --accent-glow: 0 6px 32px rgba(0,255,136,0.06), 0 1px 2px rgba(255,127,42,0.03);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+    color:#e6eef0; background:
+      radial-gradient(900px 480px at 5% 10%, rgba(0,255,136,0.03), transparent 7%),
+      radial-gradient(700px 400px at 95% 85%, rgba(255,127,42,0.02), transparent 7%), var(--bg);
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; padding:28px;
+  }
+
+  /* layout */
+  .wrap{max-width:1200px;margin:0 auto;display:grid;gap:20px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:86px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--neon-green),var(--neon-orange));box-shadow:var(--accent-glow);display:flex;align-items:center;justify-content:center;font-weight:900;color:#04110b}
+  h1{font-size:18px;margin:0}
+  .sub{color:var(--muted);font-size:13px}
+
+  nav{display:flex;gap:8px;align-items:center}
+  .btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+  .btn-primary{background:linear-gradient(90deg,var(--neon-green),var(--neon-orange));color:#04110b;border:0;box-shadow:var(--accent-glow)}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1fr 420px;gap:18px;padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+  .hero-left h2{font-size:34px;margin:0 0 8px}
+  .hero-left p{color:var(--muted);margin:0}
+  .controls{display:flex;gap:10px;margin-top:12px;align-items:center}
+
+  /* interactive canvas area */
+  .collage{
+    position:relative;height:300px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(255,255,255,0.01));overflow:hidden;border:1px solid rgba(255,255,255,0.02)
+  }
+  .sticker{
+    position:absolute;touch-action:none;cursor:grab; user-select:none;
+    transition:transform .14s cubic-bezier(.2,.9,.2,1),box-shadow .12s;
+    will-change:transform;
+  }
+  .sticker:active{cursor:grabbing; transform:scale(.98)}
+  .sticker img{display:block;max-width:220px;filter:drop-shadow(0 12px 24px rgba(0,0,0,0.6))}
+
+  /* price widget */
+  .price-card{padding:14px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+  .price-num{font-weight:900;font-size:28px}
+  .trend-up{color:var(--neon-green);font-weight:800}
+  .trend-down{color:#ff5c7a;font-weight:800}
+
+  /* pills */
+  .pills{display:flex;gap:10px;align-items:center;margin-top:14px}
+  .pill-btn{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:999px;background:var(--glass);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:800}
+  .pill-svg{width:34px;height:22px;border-radius:6px;display:inline-block;flex-shrink:0}
+
+  /* small interactions */
+  .mini{font-size:13px;color:var(--muted)}
+  .leader{display:flex;gap:8px;align-items:center;margin-top:10px}
+  .leader .count{font-weight:900;font-size:18px;color:var(--neon-orange)}
+
+  /* mint badge modal */
+  .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.98);min-width:320px;background:linear-gradient(180deg, #06110a, #0c0f12);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(0,0,0,0.8);z-index:200;display:none}
+  .modal.show{display:block;animation:pop .28s cubic-bezier(.2,.9,.2,1)}
+  @keyframes pop{from{transform:translate(-50%,-50%) scale(.96);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+
+  /* toast */
+  .toast{position:fixed;right:18px;bottom:18px;padding:12px 16px;border-radius:10px;background:linear-gradient(90deg,var(--neon-green),var(--neon-orange));color:#04110b;font-weight:800;box-shadow:var(--accent-glow);display:none;z-index:300}
+
+  /* footer */
+  footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;padding-top:8px}
+
+  @media(max-width:940px){
+    .hero{grid-template-columns:1fr}
+    .collage{height:240px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">MLD</div>
+      <div>
+        <h1>Major League Dev</h1>
+        <div class="sub">$MLD — Ship fast • Bonk bugs • PumpFun</div>
+      </div>
+    </div>
+
+    <nav>
+      <button class="btn" onclick="scrollToJoin()">Join</button>
+      <button class="btn" onclick="openDiscord()">Discord</button>
+      <button id="connectBtn" class="btn">Connect Wallet</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-left">
+      <h2>Major League Dev — memefied builders, caffeinated launches</h2>
+      <p class="mini">Interactive landing for devs. Drag stickers, click pills to Bonk or Pump, mint badges, and connect wallet. Replace the placeholder collage images with your own chaotic MLD artwork.</p>
+
+      <div class="controls">
+        <button class="btn-primary" onclick="claimEarly()">Get Early Supporter Reward</button>
+        <button class="btn" onclick="toggleBadgeModal()">Mint Badge</button>
+        <div style="margin-left:auto;text-align:right" class="mini">
+          <div style="color:var(--muted)">Supply</div>
+          <div style="font-weight:900">1,000,000,000</div>
+        </div>
+      </div>
+
+      <div class="pills" aria-hidden="false">
+        <!-- orange pill - Let's Bonk -->
+        <div class="pill-btn" id="bonkBtn" title="Let's Bonk (orange/white)" onclick="doBonk()">
+          <svg class="pill-svg" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="12" height="16" rx="4" fill="#ff7f2a"></rect>
+            <rect x="12" y="0" width="12" height="16" rx="4" fill="#ffffff"></rect>
+          </svg>
+          Let's Bonk
+        </div>
+
+        <!-- green pill - PumpFun -->
+        <div class="pill-btn" id="pumpBtn" title="PumpFun (green/white)" onclick="doPumpFun()">
+          <svg class="pill-svg" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="12" height="16" rx="4" fill="#00ff88"></rect>
+            <rect x="12" y="0" width="12" height="16" rx="4" fill="#ffffff"></rect>
+          </svg>
+          PumpFun
+        </div>
+
+        <div class="leader mini" style="margin-left:12px">
+          <div>Bonks:</div><div class="count" id="bonkCount">0</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <form id="signup" style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="email" type="email" placeholder="you@devmail.com" required style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit">
+          <button class="btn-primary" type="submit">Join Waitlist</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- right column: collage + price -->
+    <aside>
+      <div class="collage" id="collage" aria-label="Interactive collage area">
+        <!-- Placeholder stickers. Replace src with your collage elements or generated images -->
+        <div class="sticker" id="st1" style="left:18px;top:18px;transform:translateZ(0)"><img src="https://i.imgur.com/7y3mY3o.png" alt="sticker1"></div>
+        <div class="sticker" id="st2" style="left:220px;top:32px;transform:translateZ(0)"><img src="https://i.imgur.com/8zqQp3J.png" alt="sticker2"></div>
+        <div class="sticker" id="st3" style="left:80px;top:140px;transform:translateZ(0)"><img src="https://i.imgur.com/W3bKcGx.png" alt="sticker3"></div>
+        <!-- use small invisible badge overlay for the bonk effect -->
+        <div id="bonkFlash" style="position:absolute;inset:0;border-radius:12px;pointer-events:none;display:none"></div>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <div class="price-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="mini">Market</div>
+            <div style="font-weight:900">SOL / ETH / SOLANA</div>
+          </div>
+          <div style="text-align:right">
+            <div class="mini">Price</div>
+            <div class="price-num" id="priceNum">$0.000000</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+          <button class="btn" onclick="simulateSwap()">Swap</button>
+          <button class="btn" onclick="addToWallet()">Add Token</button>
+          <button class="btn" onclick="copyAddress()">Copy Treasury</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="card" style="padding:14px;border-radius:12px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.03)">
+    <h3 style="margin:0 0 8px">Leaderboards • Recent Bonks</h3>
+    <div id="leaderboard" class="mini">Top Bonkers will be shown here (live simulated).</div>
+  </section>
+
+  <footer>
+    <div>© MLD • Major League Dev — made with ☕ & chaos</div>
+    <div class="mini">Deploy: GitHub Pages • Replace placeholder images & links</div>
+  </footer>
+</div>
+
+<!-- modal: mint badge -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:72px;height:72px;border-radius:10px;background:linear-gradient(135deg,var(--neon-green),var(--neon-orange));display:flex;align-items:center;justify-content:center;font-weight:900;color:#04110b">BDG</div>
+    <div style="flex:1">
+      <div style="font-weight:900">Mint your Dev Badge</div>
+      <div class="mini" style="margin-top:6px">Mint a collectible badge to flex on the leaderboard. This is a simulated mint — replace with your contract logic.</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end">
+    <button class="btn" onclick="toggleBadgeModal()">Cancel</button>
+    <button class="btn-primary" onclick="mintBadge()">Mint Badge</button>
+  </div>
+</div>
+
+<div id="toast" class="toast">Minted — badge added to your dashboard</div>
+
+<script>
+/* -------------------------
+  Helper: smooth scroll for 'Join' button
+--------------------------*/
+function scrollToJoin(){ location.hash='#'; document.getElementById('email')?.focus(); }
+
+/* -------------------------
+  Signup form -> placeholder webhook (replace URL)
+--------------------------*/
+document.getElementById('signup').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  // Replace with your Zapier/Make/webhook endpoint
+  const WEBHOOK = 'https://example.com/your-webhook';
+  try{
+    // try to send; it's optional — we still show success
+    await fetch(WEBHOOK, {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email,role:'dev',ts:Date.now()})});
+  }catch(err){
+    /* ignore network errors for now */
+    console.warn('webhook failed', err);
+  }
+  alert('You are on the Early Supporter Reward waitlist — ' + email);
+  document.getElementById('signup').reset();
+});
+
+/* -------------------------
+  Draggable stickers (touch + mouse)
+--------------------------*/
+function makeDraggable(el){
+  el.style.touchAction='none';
+  let dragging=false, startX=0, startY=0, ox=0, oy=0;
+  const onDown = (e) => {
+    dragging = true;
+    el.style.transition='transform .08s';
+    startX = (e.touches?e.touches[0].clientX:e.clientX);
+    startY = (e.touches?e.touches[0].clientY:e.clientY);
+    const rect = el.getBoundingClientRect();
+    ox = rect.left; oy = rect.top;
+    el.style.zIndex = 99;
+  };
+  const onMove = (e) => {
+    if(!dragging) return;
+    const cx = (e.touches?e.touches[0].clientX:e.clientX);
+    const cy = (e.touches?e.touches[0].clientY:e.clientY);
+    const dx = cx - startX; const dy = cy - startY;
+    el.style.transform = `translate(${dx}px, ${dy}px)`;
+  };
+  const onUp = () => {
+    if(!dragging) return;
+    dragging=false;
+    // compute final left/top relative to parent
+    const prev = el.style.transform;
+    // get computed transform translate and apply to left/top then reset transform
+    const m = prev.match(/translate\(([-0-9.]+)px,\s*([-0-9.]+)px\)/);
+    let dx=0, dy=0;
+    if(m){ dx = parseFloat(m[1]); dy = parseFloat(m[2]); }
+    // parse current left/top
+    const curLeft = parseFloat(el.style.left || el.getBoundingClientRect().left - el.parentElement.getBoundingClientRect().left);
+    const curTop = parseFloat(el.style.top || el.getBoundingClientRect().top - el.parentElement.getBoundingClientRect().top);
+    el.style.left = (curLeft + dx) + 'px';
+    el.style.top = (curTop + dy) + 'px';
+    el.style.transform = '';
+    el.style.zIndex = '';
+  };
+  el.addEventListener('mousedown', onDown);
+  el.addEventListener('touchstart', onDown);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove,{passive:false});
+  window.addEventListener('mouseup', onUp);
+  window.addEventListener('touchend', onUp);
+}
+/* initialize stickers */
+document.querySelectorAll('.sticker').forEach(s => makeDraggable(s));
+
+/* -------------------------
+  Bonk & PumpFun interactions
+--------------------------*/
+let bonkCount = 0;
+function doBonk(){
+  bonkCount++; document.getElementById('bonkCount').textContent = bonkCount;
+  // bonk flash
+  const f = document.getElementById('bonkFlash');
+  f.style.display='block'; f.style.background='radial-gradient(circle at 25% 25%, rgba(255,127,42,0.18), rgba(255,127,42,0.04) 15%, transparent 45%)';
+  f.animate([{opacity:0},{opacity:1},{opacity:0}], {duration:700, easing:'ease-out'});
+  setTimeout(()=>f.style.display='none',720);
+  // small leaderboard entry
+  addLbEntry('anon_dev_'+(Math.random()*999|0), 'bonk');
+}
+
+let price = 0.000000;
+function updatePriceDisplay(){
+  document.getElementById('priceNum').textContent = '$' + price.toFixed(6);
+}
+function doPumpFun(){
+  // pump price visually
+  price = Math.max(0.000001, price + (Math.random()*0.00006 + 0.00001));
+  updatePriceDisplay();
+  // little scale animation on price
+  const el = document.getElementById('priceNum');
+  el.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:600,easing:'cubic-bezier(.2,.9,.2,1)'});
+  // confetti canvas simple burst (DOM)
+  burstConfetti();
+  addLbEntry('pumper_'+(Math.random()*999|0), 'pump');
+}
+
+/* tiny confetti using DOM elements */
+function burstConfetti(){
+  const parent = document.getElementById('collage');
+  for(let i=0;i<18;i++){
+    const d = document.createElement('div');
+    d.style.position='absolute';
+    d.style.left = (50 + (Math.random()*160-80)) + '%';
+    d.style.top = (50 + (Math.random()*40-20)) + '%';
+    d.style.width='8px'; d.style.height='8px'; d.style.borderRadius='2px';
+    d.style.background = (Math.random()>0.5?getComputedStyle(document.documentElement).getPropertyValue('--neon-green'):getComputedStyle(document.documentElement).getPropertyValue('--neon-orange'));
+    d.style.opacity='0.95';
+    d.style.transform = 'translate(-50%,-50%)';
+    d.style.pointerEvents='none';
+    parent.appendChild(d);
+    const dx = (Math.random()*260-120), dy = (Math.random()*260-80);
+    d.animate([{transform:'translate(-50%,-50%)'},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*360}deg)` , opacity:1},{opacity:0}],{duration:900+Math.random()*600, easing:'cubic-bezier(.2,.9,.2,1)'});
+    setTimeout(()=>d.remove(),1600);
+  }
+}
+
+/* leaderboard (simulated) */
+const lb = [];
+function addLbEntry(name, type){
+  const el = document.getElementById('leaderboard');
+  const item = {name, type, ts:Date.now()};
+  lb.unshift(item);
+  if(lb.length>8) lb.pop();
+  el.innerHTML = lb.map(i=>`<div style="margin-bottom:6px"><strong>${i.name}</strong> • ${i.type}</div>`).join('');
+}
+
+/* -------------------------
+  Badge modal & mint simulation
+--------------------------*/
+function toggleBadgeModal(){
+  const m = document.getElementById('modal');
+  if(m.classList.contains('show')){ m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+  else{ m.classList.add('show'); m.setAttribute('aria-hidden','false'); }
+}
+async function mintBadge(){
+  // replace with on-chain mint logic
+  toggleBadgeModal();
+  showToast('Minting...');
+  setTimeout(()=>{ showToast('Minted — badge added to your wallet (simulated)'); addLbEntry('minted_dev_'+(Math.random()*999|0),'mint'); },900);
+}
+
+/* toast */
+function showToast(text, t=2200){
+  const tEl = document.getElementById('toast');
+  tEl.textContent = text; tEl.style.display='block';
+  tEl.animate([{opacity:0, transform:'translateY(8px)'},{opacity:1, transform:'translateY(0)'}],{duration:260});
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>{ tEl.animate([{opacity:1},{opacity:0}],{duration:260}).onfinish=()=>tEl.style.display='none' }, t);
+}
+
+/* -------------------------
+  Wallet connect (ethers.js)
+--------------------------*/
+const connectBtn = document.getElementById('connectBtn');
+let userAddress = null;
+async function connectWallet(){
+  try{
+    if(window.ethereum){
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      userAddress = await signer.getAddress();
+      connectBtn.textContent = userAddress.slice(0,6)+'…'+userAddress.slice(-4);
+      connectBtn.classList.add('btn-primary');
+      showToast('Wallet connected');
+    } else {
+      alert('No injected wallet found. Install MetaMask or similar.');
+    }
+  }catch(err){
+    console.error(err);
+    alert('Connect failed: '+(err.message||err));
+  }
+}
+connectBtn.addEventListener('click', connectWallet);
+
+// load ethers
+(function loadEthers(){
+  if(window.ethers) return;
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.min.js';
+  s.onload = ()=>console.log('ethers loaded');
+  s.onerror = ()=>console.warn('Could not load ethers; wallet connect will fail.');
+  document.head.appendChild(s);
+})();
+
+/* -------------------------
+  small utilities: copy address, simulated swap
+--------------------------*/
+function copyAddress(){
+  const treasury = 'CL51atoLMieSFtdgYtoJJjMb9FEMKUqsk13fGXqNutxw'; // replace with your treasury
+  navigator.clipboard?.writeText(treasury).then(()=>showToast('Copied treasury address'));
+}
+function simulateSwap(){ alert('Simulated swap — replace with real swap widget (Pancake/Uniswap/Solana DEX).'); }
+function addToWallet(){ alert('Add token to wallet: create token metadata or use wallet API (metaMask method: watchAsset).'); }
+function openDiscord(){ window.open('https://discord.gg/', '_blank'); }
+function claimEarly(){ alert('Claim flow placeholder — you will claim via whitelist & contract once deployed.'); showToast('Added to early claim queue'); }
+
+/* -------------------------
+  small initial values
+--------------------------*/
+price = 0.000012;
+updatePriceDisplay();
+addLbEntry('seed_dev001','launch');
+
+</script>
+</body>
+</html>
