@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <title>MLD — Major League Dev | Stimulated Launches</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Major League Dev — a community dev platform to share ideas, spotlight top builders, and ship stimulated launches." />
+  <meta name="description" content="MLD is a daily dev pulse with bold montage energy — see what's trending, track top builders, and join the locker room." />
   <meta property="og:title" content="MLD — Major League Dev" />
-  <meta property="og:description" content="A community dev platform for builders & thinkers. Share ideas, track launches, and remix the culture." />
+  <meta property="og:description" content="Stimulated Launches. A daily dev pulse for builders & thinkers." />
   <meta property="og:image" content="assets/vitalik.png" />
-  <meta name="theme-color" content="#12172a" />
+  <meta name="theme-color" content="#111628" />
   <link rel="icon" href="assets/devfuel.png" />
   <link rel="preload" as="image" href="assets/matrix.png" />
   <link rel="stylesheet" href="style.css" />
@@ -22,8 +22,7 @@
         <span class="brand-text">Major League Dev</span>
       </a>
       <nav class="nav">
-        <a class="nav-link" href="#features">Features</a>
-        <a class="nav-link" href="#feed">Community</a>
+        <a class="nav-link" href="#pulse">Dev Pulse</a>
         <a class="nav-link" href="#about">About</a>
         <button id="montageToggle" class="btn ghost" aria-pressed="false" title="Toggle FX">Montage Mode</button>
         <a class="btn tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
@@ -34,101 +33,59 @@
   <!-- HERO -->
   <section class="hero fx-scan">
     <div class="wrap hero-inner">
-      <div class="logoMl"><span>MLD</span></div>
+      <div class="logoMl">MLD</div>
       <h1 class="hero-title">Stimulated Launches</h1>
       <p class="hero-sub">
-        A <strong>community dev platform</strong> for builders & thinkers — see what top developers are shipping,
-        drop your own ideas, and remix the culture.
+        A <strong>daily dev pulse</strong> with bold red/white/blue montage energy — see the hottest repos, posts, and tools in under a minute.
       </p>
       <div class="cta-row">
-        <a class="btn" href="#feed">Explore Community</a>
-        <a class="btn ghost" href="https://github.com/conspiraiAI/MLD" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn" href="#pulse">View Today’s Pulse</a>
+        <a class="btn outline" href="https://github.com/conspiraiAI/MLD" target="_blank" rel="noopener">View on GitHub</a>
       </div>
 
-      <!-- decorative brand stickers (cutouts, no interaction) -->
-      <img class="float f-pill-green" src="assets/pumpfun-pill.png" alt="" aria-hidden="true" />
-      <img class="float f-pill-orange" src="assets/letsbonk-pill.png" alt="" aria-hidden="true" />
-      <img class="float f-can" src="assets/devfuel.png" alt="" aria-hidden="true" />
-      <img class="float f-octo" src="assets/github-octocat.png" alt="" aria-hidden="true" />
-      <img class="float f-vitalik" src="assets/vitalik.png" alt="" aria-hidden="true" />
+      <!-- decorative brand stickers (pure décor) -->
+      <img class="float f1" src="assets/letsbonk-pill.png" alt="" aria-hidden="true" />
+      <img class="float f2" src="assets/pumpfun-pill.png" alt="" aria-hidden="true" />
+      <img class="float f3" src="assets/devfuel.png" alt="" aria-hidden="true" />
+      <img class="float f4" src="assets/github-octocat.png" alt="" aria-hidden="true" />
+      <img class="float f5" src="assets/vitalik.png" alt="" aria-hidden="true" />
       <div class="matrix-overlay" aria-hidden="true"></div>
     </div>
 
     <!-- MARQUEE -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee__inner">
-        <span>share ideas</span>
         <span>stimulated launches</span>
-        <span>follow top builders</span>
-        <span>ship fast</span>
+        <span>dev pulse</span>
+        <span>frontend fire</span>
+        <span>backend beasts</span>
+        <span>ai all-stars</span>
         <span>major league dev</span>
       </div>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section id="features" class="section">
+  <!-- DEV PULSE -->
+  <section id="pulse" class="section">
     <div class="wrap">
-      <h2 class="section-title">What you can do</h2>
-      <div class="features">
-        <article class="card feature">
-          <h3>Share Micro-Ideas</h3>
-          <p>Post quick concepts, research notes, or launch plans. Keep it lightweight and shippable.</p>
-        </article>
-        <article class="card feature">
-          <h3>Track Top Builders</h3>
-          <p>See what leading devs are experimenting with — stacks, repos, and live demos.</p>
-        </article>
-        <article class="card feature">
-          <h3>Stimulated Launches</h3>
-          <p>Celebrate deploys with montage-style highlights and community reactions.</p>
-        </article>
+      <div class="pulse-head">
+        <h2 class="section-title">Today’s Dev Pulse</h2>
+        <div class="filters">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="code">Code</button>
+          <button class="chip" data-filter="articles">Articles</button>
+          <button class="chip" data-filter="packages">Packages</button>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- COMMUNITY FEED (static placeholders now; wire real data later) -->
-  <section id="feed" class="section section-dark fx-scan">
-    <div class="wrap">
-      <h2 class="section-title">Community Feed</h2>
-      <p class="mini">A rolling stream of ideas & launches from builders. (Sample posts — connect data later.)</p>
+      <div id="pulseGrid" class="grid"></div>
 
-      <div class="feed">
-        <article class="post">
-          <div class="post-head">
-            <img class="post-ava" src="assets/anatoly.png" alt="" />
-            <div>
-              <div class="handle">@deploy_lord</div>
-              <div class="time">2h ago • Concept</div>
-            </div>
-          </div>
-          <p class="post-body">Hot take: “feature flags for DB migrations” using a tiny DSL + rollback semantics. want collaborators?</p>
-          <div class="post-tags"><span>#solana</span><span>#runtime</span><span>#migrations</span></div>
-        </article>
-
-        <article class="post">
-          <div class="post-head">
-            <img class="post-ava" src="assets/cz.png" alt="" />
-            <div>
-              <div class="handle">@dealer_liquidity</div>
-              <div class="time">6h ago • Launch</div>
-            </div>
-          </div>
-          <p class="post-body">rolling out per-pool risk scoring. ships behind a soft gate — dm for audit eyes.</p>
-          <div class="post-tags"><span>#risk</span><span>#defi</span></div>
-        </article>
-
-        <article class="post">
-          <div class="post-head">
-            <img class="post-ava" src="assets/saylor.png" alt="" />
-            <div>
-              <div class="handle">@corp_dev</div>
-              <div class="time">1d ago • Notes</div>
-            </div>
-          </div>
-          <p class="post-body">benchmarking WASM vs native for plugin sandbox. wasm wins at isolation, native wins at raw perf. tradeoffs inside.</p>
-          <div class="post-tags"><span>#wasm</span><span>#security</span><span>#bench</span></div>
-        </article>
+      <div class="ctaBanner card">
+        <div class="banner-copy">
+          <h3>Join the Locker Room</h3>
+          <p>Hype launches, share ideas, and see what top builders are shipping.</p>
+        </div>
+        <a class="btn" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
       </div>
     </div>
   </section>
@@ -139,8 +96,8 @@
       <div class="card about">
         <h2>What is MLD?</h2>
         <p>
-          <strong>Major League Dev</strong> is a <em>social space for developers</em> — a montage-styled hub where you can
-          follow top builders, share ideas, and push launches forward together. Clean base design. Bold, red/white/blue energy.
+          <strong>Major League Dev</strong> is a social space for developers — a fast, curated pulse of what’s trending,
+          wrapped in a bold montage identity. Check in daily, discover tools worth trying, and plug into a culture that ships.
         </p>
       </div>
     </div>
