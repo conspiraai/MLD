@@ -25,34 +25,17 @@ img{max-width:100%;display:block}
 .btn.ghost{background:rgba(255,255,255,.06);color:#e9eefc;border-color:rgba(255,255,255,.22)}
 .btn.tg{white-space:nowrap}
 
-/* Hero layering: rain (0) -> decor (1) -> text (2) */
+/* Hero */
 .hero{position:relative;overflow:hidden}
 #matrixCanvas{
   position:absolute; inset:0; width:100%; height:100%;
-  z-index:0; opacity:.2; mix-blend-mode:screen; pointer-events:none;
+  z-index:0; opacity:.22; mix-blend-mode:screen; pointer-events:none;
 }
-.hero-decor{position:absolute; inset:0; z-index:1; pointer-events:none}
-.hero-inner{position:relative; z-index:2}
-
+.hero-inner{position:relative;z-index:2;padding:26px 0 18px}
 .logoMl{display:inline-grid;place-items:center;border-radius:12px;padding:8px 14px;background:var(--grad);color:#0b0e19;border:2px solid rgba(255,255,255,.45);box-shadow:var(--shadow);font-weight:1000;letter-spacing:.6px;margin-bottom:8px}
 .hero-title{font-size:clamp(36px,8.2vw,84px);line-height:1.05;margin:0 0 8px;font-weight:1000;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-sub{max-width:760px;opacity:.92;margin:0 0 18px}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
-
-/* Right-side sticker cluster (never covers text) */
-#stickerCluster{
-  position:absolute; right:2%; top:10%;
-  width:min(42vw, 420px); height:320px; /* bounds for movement */
-}
-.sticker{position:absolute; filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45));}
-.s1{left:6%;  top:62%; width:120px;}   /* pumpfun */
-.s2{right:4%; top:6%;  width:120px;}   /* devfuel */
-.s3{right:12%; top:44%; width:140px;}  /* octocat */
-.s4{left:22%; top:10%; width:110px;}   /* vitalik small */
-.s5{left:50%; top:28%; width:90px; opacity:.75;}  /* matrix sticker */
-.accent-left{position:absolute; left:2%; top:14%; width:110px; filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45))}
-
-/* scanlines */
 .fx-scan::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 3px);mix-blend-mode:overlay;opacity:.16}
 
 /* Marquee */
@@ -60,12 +43,9 @@ img{max-width:100%;display:block}
 .marquee__inner{display:flex;gap:32px;padding:10px 0;white-space:nowrap;font-weight:1000;text-transform:uppercase;letter-spacing:.4px;animation:scroll 24s linear infinite}
 @keyframes scroll{to{transform:translateX(-50%)}}
 
-/* Sections */
+/* Sections & cards */
 .section{padding:50px 0}
 .section-title{margin:0 0 12px;font-size:clamp(24px,5.5vw,36px);font-weight:1000}
-.mini{opacity:.78;font-size:13px}
-
-/* Pulse */
 .pulse-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 .chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:#e9eefc;border-radius:999px;padding:8px 12px;cursor:pointer}
@@ -82,34 +62,24 @@ img{max-width:100%;display:block}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:12px;opacity:.85;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.2)}
 .actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
-.btn-mini{font-weight:900;text-transform:uppercase;font-size:12px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.3);background:var(--grad);color:#0b0e19}
+.btn-mini{font-weight:900;text-transform:uppercase;font-size:12px;padding:8px 10px;border:1px solid rgba(255,255,255,.3);border-radius:10px;background:var(--grad);color:#0b0e19}
 .stat{opacity:.8;font-size:12px}
-
-/* CTA banner */
-.ctaBanner{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
-.ctaBanner h3{margin:0}
 
 /* Footer */
 .footer{border-top:1px solid rgba(255,255,255,.1);padding:28px 0;color:#b8c5ef}
 .footer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
-/* Montage Mode — obvious differences */
+/* Montage Mode cues */
 .montage #matrixCanvas{opacity:.5}
 .montage .marquee__inner{animation-duration:12s !important}
 .montage .hero-title{ text-shadow:0 0 18px rgba(255,255,255,.25), 0 0 38px rgba(43,91,255,.25) }
 
-/* RESPONSIVE: phone-first polish */
+/* Responsive polish */
 @media (max-width:700px){
-  #stickerCluster{ right:1%; top:8%; width:56vw; height:240px; }
-  .s1{ left:6%;  top:58%; width:90px; }
-  .s2{ right:2%; top:6%;  width:86px; }
-  .s3{ right:8%; top:46%; width:98px; }
-  .s4{ left:20%; top:12%; width:84px; }
-  .s5{ left:52%; top:28%; width:64px; opacity:.7; }
-  .accent-left{ left:3%; top:12%; width:88px; }
+  .hero-inner{padding:18px 0 10px}
 }
 
-/* reduced motion */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   .marquee__inner, #matrixCanvas{animation:none}
 }
