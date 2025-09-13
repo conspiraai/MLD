@@ -1,22 +1,24 @@
-// year
+// footer year
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-// Montage toggle
+/* ===== Montage toggle (visible + persisted) ===== */
 const toggle = document.getElementById('montageToggle');
 const root = document.body;
 const saved = sessionStorage.getItem('mld_montage');
-if (saved === 'on') { root.classList.add('montage'); toggle.setAttribute('aria-pressed','true'); }
+if (saved === 'on') { root.classList.add('montage'); toggle.setAttribute('aria-pressed','true'); toggle.textContent = 'Montage: ON'; }
 toggle.addEventListener('click', () => {
   const on = root.classList.toggle('montage');
   toggle.setAttribute('aria-pressed', String(on));
+  toggle.textContent = on ? 'Montage: ON' : 'Montage Mode';
   sessionStorage.setItem('mld_montage', on ? 'on' : 'off');
-  setRainSpeed(); // also update code rain speed/brightness
+  setRainSpeed?.(); // sync rain speed/brightness
 });
 
-/* ===== Matrix Digital Rain (classic falling glyphs) ===== */
+/* ===== Matrix Digital Rain (falling glyph columns) ===== */
 (function(){
   const canvas = document.getElementById('matrixCanvas');
-  const ctx = canvas.getContext('2d', { alpha: true });
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha:true });
   const glyphs = 'アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   let fontSize, cols, drops, dpr, speed;
@@ -38,17 +40,16 @@ toggle.addEventListener('click', () => {
   }
 
   function draw(){
-    // trail
-    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    // trail fade
+    ctx.fillStyle = 'rgba(0,0,0,0.09)';
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     const montage = document.body.classList.contains('montage');
-    const color = montage ? 'rgba(140,255,170,0.9)' : 'rgba(100,255,140,0.7)';
-    ctx.shadowColor = 'rgba(0,255,120,0.35)';
-    ctx.shadowBlur = montage ? 18 : 10;
-    ctx.fillStyle = color;
+    ctx.fillStyle   = montage ? 'rgba(140,255,170,0.95)' : 'rgba(110,255,160,0.78)';
+    ctx.shadowColor = 'rgba(0,255,120,0.4)';
+    ctx.shadowBlur  = montage ? 20 : 10;
 
-    for (let i=0;i<cols;i++){
+    for (let i=0; i<cols; i++){
       const char = glyphs[(Math.random()*glyphs.length)|0];
       const x = i * fontSize * dpr;
       const y = drops[i] * fontSize * dpr;
@@ -61,12 +62,13 @@ toggle.addEventListener('click', () => {
   }
 
   function setSpeed(){
-    speed = document.body.classList.contains('montage') ? 1.4 : 1.0;
+    // obvious difference between modes
+    speed = document.body.classList.contains('montage') ? 2.0 : 0.9;
   }
+  window.setRainSpeed = setSpeed;
 
   window.addEventListener('resize', () => { resize(); setSpeed(); });
   resize(); setSpeed(); draw();
-  window.setRainSpeed = setSpeed; // expose to montage toggle
 })();
 
 /* ---- Dev Pulse (dummy data for MVP) ---- */
