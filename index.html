@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <title>MLD — Major League Dev | Stimulated Launches</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="MLD is a daily dev pulse with bold montage energy — see what's trending, track top builders, and join the locker room." />
+  <meta name="description" content="MLD is a daily dev pulse — see the hottest repos, posts, tools, and builders in under a minute." />
   <meta property="og:title" content="MLD — Major League Dev" />
   <meta property="og:description" content="Stimulated Launches. A daily dev pulse for builders & thinkers." />
   <meta property="og:image" content="assets/vitalik.png" />
-  <meta name="theme-color" content="#111628" />
+  <meta name="theme-color" content="#0b0f18" />
   <link rel="icon" href="assets/devfuel.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -31,21 +31,23 @@
 
   <!-- HERO -->
   <section class="hero fx-scan">
-    <!-- Matrix code rain sits BEHIND everything -->
+    <!-- Matrix rain behind everything -->
     <canvas id="matrixCanvas" aria-hidden="true"></canvas>
 
-    <!-- DECOR LAYER (under text) -->
+    <!-- DECOR cluster (right side only) -->
     <div class="hero-decor" aria-hidden="true">
-      <img class="float f1" src="assets/letsbonk-pill.png" alt="" />
-      <img class="float f2" src="assets/pumpfun-pill.png"  alt="" />
-      <img class="float f3" src="assets/devfuel.png"       alt="" />
-      <img class="float f4" src="assets/github-octocat.png" alt="" />
-      <img class="float f5" src="assets/vitalik.png"       alt="" />
-      <!-- keep your original matrix sticker as a small float -->
-      <img class="float f6" src="assets/matrix.png"        alt="" />
+      <div id="stickerCluster">
+        <img class="sticker s1" src="assets/pumpfun-pill.png" alt="" />
+        <img class="sticker s2" src="assets/devfuel.png" alt="" />
+        <img class="sticker s3" src="assets/github-octocat.png" alt="" />
+        <img class="sticker s4" src="assets/vitalik.png" alt="" />
+        <img class="sticker s5" src="assets/matrix.png" alt="" />
+      </div>
+      <!-- a small left-side accent so the hero feels balanced -->
+      <img class="accent-left" src="assets/letsbonk-pill.png" alt="" />
     </div>
 
-    <!-- TEXT LAYER -->
+    <!-- TEXT -->
     <div class="wrap hero-inner">
       <div class="logoMl">MLD</div>
       <h1 class="hero-title">Stimulated Launches</h1>
