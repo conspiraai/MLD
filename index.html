@@ -5,9 +5,6 @@
   <title>MLD — Major League Dev | Stimulated Launches</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="MLD is a daily dev pulse — see the hottest repos, posts, tools, and builders in under a minute." />
-  <meta property="og:title" content="MLD — Major League Dev" />
-  <meta property="og:description" content="Stimulated Launches. A daily dev pulse for builders & thinkers." />
-  <meta property="og:image" content="assets/vitalik.png" />
   <meta name="theme-color" content="#0b0f18" />
   <link rel="icon" href="assets/devfuel.png" />
   <link rel="stylesheet" href="style.css" />
@@ -23,31 +20,16 @@
       <nav class="nav">
         <a class="nav-link" href="#pulse">Dev Pulse</a>
         <a class="nav-link" href="#about">About</a>
-        <button id="montageToggle" class="btn ghost" aria-pressed="false" title="Toggle FX">Montage Mode</button>
+        <button id="montageToggle" class="btn ghost" aria-pressed="false">Montage Mode</button>
         <a class="btn tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
       </nav>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero fx-scan">
-    <!-- Matrix rain behind everything -->
+  <!-- HERO: Matrix rain background; stickers only appear here in Montage Mode -->
+  <section id="hero" class="hero fx-scan">
     <canvas id="matrixCanvas" aria-hidden="true"></canvas>
 
-    <!-- DECOR cluster (right side only) -->
-    <div class="hero-decor" aria-hidden="true">
-      <div id="stickerCluster">
-        <img class="sticker s1" src="assets/pumpfun-pill.png" alt="" />
-        <img class="sticker s2" src="assets/devfuel.png" alt="" />
-        <img class="sticker s3" src="assets/github-octocat.png" alt="" />
-        <img class="sticker s4" src="assets/vitalik.png" alt="" />
-        <img class="sticker s5" src="assets/matrix.png" alt="" />
-      </div>
-      <!-- a small left-side accent so the hero feels balanced -->
-      <img class="accent-left" src="assets/letsbonk-pill.png" alt="" />
-    </div>
-
-    <!-- TEXT -->
     <div class="wrap hero-inner">
       <div class="logoMl">MLD</div>
       <h1 class="hero-title">Stimulated Launches</h1>
@@ -60,15 +42,10 @@
       </div>
     </div>
 
-    <!-- MARQUEE -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee__inner">
-        <span>stimulated launches</span>
-        <span>dev pulse</span>
-        <span>frontend fire</span>
-        <span>backend beasts</span>
-        <span>ai all-stars</span>
-        <span>major league dev</span>
+        <span>stimulated launches</span><span>dev pulse</span><span>frontend fire</span>
+        <span>backend beasts</span><span>ai all-stars</span><span>major league dev</span>
       </div>
     </div>
   </section>
@@ -85,7 +62,6 @@
           <button class="chip" data-filter="packages">Packages</button>
         </div>
       </div>
-
       <div id="pulseGrid" class="grid"></div>
 
       <div class="ctaBanner card">
@@ -111,7 +87,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="wrap footer-row">
       <small class="mini">© <span id="yr"></span> Major League Dev</small>
