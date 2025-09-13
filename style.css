@@ -23,24 +23,23 @@ img{max-width:100%;display:block}
 .btn:hover{filter:saturate(1.08) brightness(1.03);transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
 .btn.ghost{background:rgba(255,255,255,.06);color:#e9eefc;border-color:rgba(255,255,255,.22)}
-.btn.outline{background:transparent;color:#e9eefc;border-color:rgba(255,255,255,.45)}
 
 /* Hero */
 .hero{position:relative;overflow:hidden}
 .hero-inner{padding:92px 0 42px;position:relative}
-.logoLockup{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
-.logoMl{display:inline-grid;place-items:center;border-radius:12px;padding:8px 14px;background:var(--grad);color:#0b0e19;border:2px solid rgba(255,255,255,.45);box-shadow:var(--shadow)}
-.logoMl span{font-weight:1000;letter-spacing:.6px}
-.hero-title{font-size:clamp(34px,6.4vw,68px);line-height:1.05;margin:0 0 8px;font-weight:1000;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logoMl{display:inline-grid;place-items:center;border-radius:12px;padding:8px 14px;background:var(--grad);color:#0b0e19;border:2px solid rgba(255,255,255,.45);box-shadow:var(--shadow);font-weight:1000;letter-spacing:.6px;margin-bottom:8px}
+.hero-title{font-size:clamp(38px,6.4vw,76px);line-height:1.05;margin:0 0 8px;font-weight:1000;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-sub{max-width:760px;opacity:.92;margin:0 0 18px}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
 
-/* floating stickers */
-.float{position:absolute;filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45));width:110px}
-.f1{top:10%;right:6%;animation:float 7s ease-in-out infinite}
-.f2{top:34%;left:4%;animation:float 8s ease-in-out -2s infinite}
-.f3{top:14%;left:32%;animation:float 9s ease-in-out -1s infinite}
-.f4{top:58%;right:20%;width:140px;animation:float 7.5s ease-in-out -3s infinite}
+/* decorative floats */
+.float{position:absolute;filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45));image-rendering:-webkit-optimize-contrast}
+.f-pill-green{top:16%;left:6%;width:120px;animation:float 8s ease-in-out -1s infinite}
+.f-pill-orange{top:8%;right:18%;width:140px;animation:float 8s ease-in-out infinite}
+.f-can{top:18%;right:6%;width:120px;animation:float 7s ease-in-out -2s infinite}
+.f-octo{top:46%;right:20%;width:140px;animation:float 9s ease-in-out -3s infinite}
+.f-vitalik{top:54%;left:12%;width:150px;animation:float 9s ease-in-out -1.5s infinite}
+
 @keyframes float{50%{transform:translateY(-6px) rotate(2deg)}}
 
 /* Matrix overlay */
@@ -60,24 +59,23 @@ img{max-width:100%;display:block}
 .section-title{margin:0 0 12px;font-size:clamp(24px,4vw,36px);font-weight:1000}
 .mini{opacity:.78;font-size:13px}
 
-/* Sticker grid */
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill, minmax(160px, 1fr))}
-.sticker-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;transform:translateY(6px);opacity:0}
-.sticker-card img{width:100%;height:auto;border-radius:12px;image-rendering:-webkit-optimize-contrast;filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 8px 22px rgba(0,0,0,.45))}
-.sticker-card:hover{transform:translateY(-2px);transition:transform .08s ease}
-.reveal.revealed{transform:none;opacity:1;transition:opacity .6s ease, transform .6s ease}
+/* Features */
+.features{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.feature h3{margin-top:2px}
 
-/* Playground */
-.playhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-.controls{display:flex;flex-wrap:wrap;gap:10px}
-.sel{background:#0f1421;color:#e9eefc;border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:10px 12px}
-.stageWrap{position:relative;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:radial-gradient(900px 480px at 15% -10%, #17203a 0%, #0d1222 60%, #0c101c 100%);box-shadow:var(--shadow);padding:14px}
-#stage{display:block;width:100%;height:auto;border-radius:10px;background:transparent;outline:none;cursor:grab}
-#stage:active{cursor:grabbing}
-.hint{margin-top:10px}
+/* Community feed */
+.feed{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.post{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.post-head{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.post-ava{width:38px;height:38px;border-radius:10px;filter:drop-shadow(0 3px 0 #fff) drop-shadow(0 8px 16px rgba(0,0,0,.35))}
+.handle{font-weight:800}
+.time{opacity:.7;font-size:12px}
+.post-body{margin:8px 0 10px}
+.post-tags span{display:inline-block;margin-right:8px;margin-top:2px;font-size:12px;opacity:.75;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 8px}
 
 /* About & Footer */
-.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.about p{margin:0}
 .footer{border-top:1px solid rgba(255,255,255,.1);padding:28px 0;color:#b8c5ef}
 .footer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
@@ -85,10 +83,8 @@ img{max-width:100%;display:block}
 .montage .matrix-overlay{opacity:.22;animation:drift 22s linear infinite}
 @keyframes drift{50%{background-position:60% 40%}}
 .montage .float{animation-duration:5.5s}
-.montage .sticker-card{animation:jiggle 1.5s ease-in-out infinite alternate}
-@keyframes jiggle{from{transform:translateY(0) rotate(-.4deg)}to{transform:translateY(-2px) rotate(.4deg)}}
 
 /* reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .marquee__inner, .matrix-overlay, .float, .sticker-card, .montage .sticker-card{animation:none}
+  .marquee__inner, .matrix-overlay, .float{animation:none}
 }
