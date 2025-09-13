@@ -1,146 +1,172 @@
 // footer year
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* ===== Montage toggle (visible + persisted) ===== */
+/* ===== Montage toggle (persisted) ===== */
 const toggle = document.getElementById('montageToggle');
 const root = document.body;
 const saved = sessionStorage.getItem('mld_montage');
-if (saved === 'on') { root.classList.add('montage'); toggle.setAttribute('aria-pressed','true'); toggle.textContent = 'Montage: ON'; }
+if (saved === 'on') { root.classList.add('montage'); toggle.setAttribute('aria-pressed','true'); toggle.textContent = 'Montage: ON'; startBouncers(); }
 toggle.addEventListener('click', () => {
   const on = root.classList.toggle('montage');
   toggle.setAttribute('aria-pressed', String(on));
   toggle.textContent = on ? 'Montage: ON' : 'Montage Mode';
   sessionStorage.setItem('mld_montage', on ? 'on' : 'off');
-  setRainSpeed?.(); // sync matrix rain
-  setStickerDrift?.(); // start/stop freer drift
+  on ? startBouncers() : stopBouncers();
 });
 
-/* ===== Matrix Digital Rain (columns w/ bright heads + fading trails) ===== */
+/* ===== Matrix Digital Rain (classic heads + trails) ===== */
 (function(){
   const canvas = document.getElementById('matrixCanvas');
-  if (!canvas) return;
   const ctx = canvas.getContext('2d', { alpha:true });
-
-  // Full katakana + ascii vibe
   const glyphs = ('アイウエオカキクケコサシスセソタチツテト' +
                   'ナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン' +
                   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ').split('');
-
   let colW, cols, drops, speeds, dpr, fontSize;
 
   function resize(){
     dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    const hero = document.querySelector('.hero');
-    const r = hero.getBoundingClientRect();
+    const r = document.getElementById('hero').getBoundingClientRect();
     canvas.width = Math.floor(r.width * dpr);
     canvas.height = Math.floor(r.height * dpr);
     canvas.style.width = r.width + 'px';
     canvas.style.height = r.height + 'px';
 
-    // font size responsive to width, a bit larger on desktop
     fontSize = Math.max(12, Math.min(22, Math.round(r.width / 58)));
     ctx.font = `${fontSize * dpr}px monospace`;
 
     colW = fontSize * dpr;
     cols = Math.floor(canvas.width / colW);
-
     drops  = new Array(cols).fill(0).map(()=> (Math.random()*canvas.height/colW)|0);
-    speeds = new Array(cols).fill(0).map(()=> 0.8 + Math.random()*0.8); // per-column speed
+    speeds = new Array(cols).fill(0).map(()=> 0.8 + Math.random()*0.8);
   }
 
   function draw(){
-    // trail fade
     ctx.fillStyle = 'rgba(0,0,0,0.08)';
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     const montage = root.classList.contains('montage');
 
-    for (let i=0; i<cols; i++){
+    for (let i=0;i<cols;i++){
       const x = i * colW;
       const y = drops[i] * colW;
 
-      // head (bright)
-      ctx.fillStyle = montage ? 'rgba(170,255,190,0.95)' : 'rgba(140,255,170,0.85)';
+      // head
+      ctx.fillStyle = montage ? 'rgba(170,255,190,0.96)' : 'rgba(140,255,170,0.85)';
       ctx.shadowColor = 'rgba(0,255,120,0.45)';
       ctx.shadowBlur  = montage ? 24 : 14;
-      const headChar = glyphs[(Math.random()*glyphs.length)|0];
-      ctx.fillText(headChar, x, y);
+      ctx.fillText(glyphs[(Math.random()*glyphs.length)|0], x, y);
 
-      // trail (dim)
+      // trail
       ctx.shadowBlur = 0;
       ctx.fillStyle = montage ? 'rgba(60,180,95,0.55)' : 'rgba(50,160,90,0.45)';
-      const trailLen = 6;
-      for (let t=1; t<trailLen; t++){
-        const ty = y - t*colW;
-        if (ty < 0) break;
-        ctx.globalAlpha = (trailLen - t) / (trailLen * (montage?0.9:1.2));
-        const ch = glyphs[(Math.random()*glyphs.length)|0];
-        ctx.fillText(ch, x, ty);
+      for (let t=1;t<6;t++){
+        const ty = y - t*colW; if (ty<0) break;
+        ctx.globalAlpha = (6-t)/(6*(montage?0.9:1.2));
+        ctx.fillText(glyphs[(Math.random()*glyphs.length)|0], x, ty);
       }
       ctx.globalAlpha = 1;
 
-      // advance & reset
+      // step
       drops[i] += speeds[i] * (montage ? 2.0 : 1.0);
-      if (y > canvas.height && Math.random() > 0.975){
-        drops[i] = 0;
-        speeds[i] = 0.8 + Math.random()*0.8;
-      }
+      if (y > canvas.height && Math.random() > 0.975){ drops[i]=0; speeds[i]=0.8+Math.random()*0.8; }
     }
     requestAnimationFrame(draw);
   }
-
-  function setSpeed(){ /* speed derived per column; we just redraw */ }
-  window.setRainSpeed = setSpeed;
 
   window.addEventListener('resize', resize, { passive:true });
   resize(); draw();
 })();
 
-/* ===== Sticker drift (Montage Mode only, bounded to right cluster area) ===== */
-(function(){
-  const cluster = document.getElementById('stickerCluster');
-  if (!cluster) return;
+/* ===== Sticker Bouncers (spawn ONLY in Montage Mode, inside hero) ===== */
+const STICKERS = [
+  'assets/vitalik.png',
+  'assets/cz.png',
+  'assets/saylor.png',
+  'assets/anatoly.png',
+  'assets/pumpfun-pill.png',
+  'assets/letsbonk-pill.png',
+  'assets/devfuel.png',
+  'assets/github-octocat.png',
+  'assets/windows-error.png',
+  'assets/matrix.png'
+];
 
-  const stickers = Array.from(cluster.querySelectorAll('.sticker')).map(el => ({
-    el, x: el.offsetLeft, y: el.offsetTop,
-    ampX: 8 + Math.random()*10,
-    ampY: 6 + Math.random()*8,
-    spd:  0.8 + Math.random()*0.8,
-    phase: Math.random()*Math.PI*2
-  }));
+let bouncerRAF = 0;
+let bouncers = [];
+const hero = document.getElementById('hero');
 
-  let rect, t0 = performance.now();
+function startBouncers(){
+  stopBouncers(); // clean if re-entering
 
-  function updateBounds(){
-    rect = cluster.getBoundingClientRect();
-  }
+  const layer = document.createElement('div');
+  layer.id = 'bouncer-layer';
+  Object.assign(layer.style, {
+    position:'absolute', inset:'0', zIndex:1, pointerEvents:'none', overflow:'hidden'
+  });
+  hero.appendChild(layer);
 
-  function tick(t){
-    const montage = document.body.classList.contains('montage');
-    if (montage){
-      const dt = (t - t0) / 1000;
-      stickers.forEach(s => {
-        const nx = s.x + Math.sin(dt * s.spd + s.phase) * s.ampX;
-        const ny = s.y + Math.cos(dt * (s.spd*0.9) + s.phase) * s.ampY;
-        // keep inside cluster box
-        const w = s.el.offsetWidth, h = s.el.offsetHeight;
-        const clampedX = Math.max(0, Math.min(nx, rect.width  - w));
-        const clampedY = Math.max(0, Math.min(ny, rect.height - h));
-        s.el.style.transform = `translate(${clampedX}px, ${clampedY}px)`;
-      });
-    }else{
-      // reset transforms when montage off
-      stickers.forEach(s => s.el.style.transform = `translate(${s.x}px, ${s.y}px)`);
-    }
-    requestAnimationFrame(tick);
-  }
+  const r = layer.getBoundingClientRect();
+  const minW = 64, maxW = 130; // sticker sizes
 
-  window.setStickerDrift = updateBounds;
-  window.addEventListener('resize', updateBounds, { passive:true });
-  updateBounds(); requestAnimationFrame(tick);
-})();
+  STICKERS.forEach(src=>{
+    const img = document.createElement('img');
+    img.src = src; img.alt = '';
+    Object.assign(img.style, {
+      position:'absolute',
+      width: Math.round(minW + Math.random()*(maxW-minW)) + 'px',
+      willChange:'transform',
+      filter:'drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45))'
+    });
+    layer.appendChild(img);
 
-/* ---- Dev Pulse (dummy content) ---- */
+    const w = img.getBoundingClientRect().width || 90;
+    bouncers.push({
+      el: img,
+      x: Math.random()*(r.width - w),
+      y: Math.random()*(r.height - w),
+      vx: (Math.random()*1.2 + 0.6) * (Math.random()<0.5?-1:1),
+      vy: (Math.random()*1.2 + 0.6) * (Math.random()<0.5?-1:1),
+      w
+    });
+  });
+
+  const step = () => {
+    const b = layer.getBoundingClientRect();
+    bouncers.forEach(s=>{
+      s.x += s.vx; s.y += s.vy;
+
+      // bounce on edges
+      if (s.x <= 0 || s.x + s.w >= b.width){ s.vx *= -1; s.x = Math.max(0, Math.min(s.x, b.width - s.w)); }
+      if (s.y <= 0 || s.y + s.w >= b.height){ s.vy *= -1; s.y = Math.max(0, Math.min(s.y, b.height - s.w)); }
+
+      s.el.style.transform = `translate(${s.x}px, ${s.y}px) rotate(${s.vx*3}deg)`;
+    });
+    bouncerRAF = requestAnimationFrame(step);
+  };
+  bouncerRAF = requestAnimationFrame(step);
+
+  window.addEventListener('resize', onResizeBouncers, { passive:true });
+}
+
+function stopBouncers(){
+  if (bouncerRAF) cancelAnimationFrame(bouncerRAF);
+  bouncerRAF = 0; bouncers = [];
+  const layer = document.getElementById('bouncer-layer');
+  if (layer) layer.remove();
+  window.removeEventListener('resize', onResizeBouncers);
+}
+
+function onResizeBouncers(){
+  const layer = document.getElementById('bouncer-layer');
+  if (!layer) return;
+  const r = layer.getBoundingClientRect();
+  bouncers.forEach(s=>{
+    s.x = Math.max(0, Math.min(s.x, r.width  - s.w));
+    s.y = Math.max(0, Math.min(s.y, r.height - s.w));
+  });
+}
+
+/* ---- Demo Dev Pulse content (static) ---- */
 const PULSE = [
   { type:'code', source:'GitHub', title:'New Rust Framework hits 1k⭐ this week',
     summary:'Zero-cost async primitives and a tiny router. DX is sharp; perf looks insane.',
