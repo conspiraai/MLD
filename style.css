@@ -114,3 +114,37 @@ img{max-width:100%;display:block}
 @media (prefers-reduced-motion: reduce){
   .marquee__inner, #matrixCanvas, .float, .pulse-card{animation:none}
 }
+
+/* === Sticker layout: keep them visible and off the text/CTA === */
+.float{ z-index:1; } /* decor layer stays under hero text (hero-inner is z-index:2) */
+
+/* Desktop / tablet */
+@media (min-width:701px){
+  /* TL: Let's Bonk pill (nudged away from headline) */
+  .f1{ top:14%; left:2%; width:120px; }
+
+  /* BR: PumpFun pill */
+  .f2{ bottom:9%; right:8%; top:auto; width:130px; }
+
+  /* TR: Dev Fuel can */
+  .f3{ top:16%; right:2%; width:120px; }
+
+  /* Mid-right: Octocat (not over headline) */
+  .f4{ top:38%; right:4%; width:140px; }
+
+  /* BL: Vitalik (moved below CTA) */
+  .f5{ bottom:8%; left:2%; top:auto; width:120px; }
+
+  /* Mid-left: Matrix sticker, subtle */
+  .f6{ top:24%; left:30%; width:100px; opacity:.7; }
+}
+
+/* Mobile: tuck closer to corners and shrink a bit more */
+@media (max-width:700px){
+  .f1{ top:12%; left:3%;  width:84px; }
+  .f2{ bottom:8%; right:6%; width:96px; top:auto; }
+  .f3{ top:14%; right:3%;  width:88px; }
+  .f4{ top:46%; right:4%;  width:96px; }
+  .f5{ bottom:8%; left:3%; width:92px; top:auto; }
+  .f6{ top:28%; left:54%; width:70px; opacity:.65; }
+}
