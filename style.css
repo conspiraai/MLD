@@ -11,39 +11,49 @@ img{max-width:100%;display:block}
 .wrap{max-width:1120px;margin:0 auto;padding:0 18px}
 
 /* Topbar */
-.topbar{position:sticky;top:0;z-index:40;background:rgba(10,13,22,.75);backdrop-filter:blur(10px) saturate(1.4);border-bottom:1px solid rgba(255,255,255,.08)}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(10,13,22,.75);backdrop-filter:blur(10px) saturate(1.4);border-bottom:1px solid rgba(255,255,255,.08)}
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-.brand{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
 .badge{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:999px;background:var(--grad);color:#0b0e19;font-weight:1000;letter-spacing:.5px;box-shadow:var(--ring)}
 .brand-text{font-weight:1000;letter-spacing:.4px}
 .nav{display:flex;align-items:center;gap:10px}
-.nav-link{opacity:.9;padding:10px 12px;border-radius:10px}
+.nav-link{color:#e9eefc;text-decoration:none;opacity:.9;padding:10px 12px;border-radius:10px}
 .nav-link:hover{background:rgba(255,255,255,.07)}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;background:var(--grad);color:#0b0e19;font-weight:900;border-radius:12px;border:2px solid rgba(255,255,255,.45);box-shadow:var(--shadow);text-transform:uppercase;letter-spacing:.2px;cursor:pointer}
 .btn:hover{filter:saturate(1.08) brightness(1.03);transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
 .btn.ghost{background:rgba(255,255,255,.06);color:#e9eefc;border-color:rgba(255,255,255,.22)}
-.btn.outline{background:transparent;color:#e9eefc;border-color:rgba(255,255,255,.45)}
+.btn.tg{white-space:nowrap}
 
 /* Hero */
 .hero{position:relative;overflow:hidden}
-.hero-inner{padding:92px 0 42px;position:relative}
+.hero-inner{padding:92px 0 42px;position:relative;z-index:1} /* keep above rain + floats */
 .logoMl{display:inline-grid;place-items:center;border-radius:12px;padding:8px 14px;background:var(--grad);color:#0b0e19;border:2px solid rgba(255,255,255,.45);box-shadow:var(--shadow);font-weight:1000;letter-spacing:.6px;margin-bottom:8px}
 .hero-title{font-size:clamp(38px,6.4vw,76px);line-height:1.05;margin:0 0 8px;font-weight:1000;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-sub{max-width:760px;opacity:.92;margin:0 0 18px}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
 
-/* Decorative floats */
-.float{position:absolute;filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45));image-rendering:-webkit-optimize-contrast}
+/* Matrix rain canvas (behind content) */
+#matrixCanvas{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:0; opacity:.22; mix-blend-mode:screen; pointer-events:none;
+}
+
+/* Decorative floats sit UNDER the text now */
+.float{
+  position:absolute; z-index:0; /* hero-inner content is z-index:1 */
+  filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45));
+  image-rendering:-webkit-optimize-contrast; pointer-events:none;
+}
 .f1{top:10%;left:6%;width:120px;animation:float 8s ease-in-out -1s infinite}
 .f2{top:8%;right:18%;width:140px;animation:float 8s ease-in-out infinite}
 .f3{top:18%;right:6%;width:120px;animation:float 7s ease-in-out -2s infinite}
-.f4{top:46%;right:20%;width:140px;animation:float 9s ease-in-out -3s infinite}
-.f5{top:54%;left:10%;width:150px;animation:float 9s ease-in-out -1.5s infinite}
+.f4{top:44%;right:20%;width:140px;animation:float 9s ease-in-out -3s infinite}
+.f5{top:58%;left:8%;width:140px;animation:float 9s ease-in-out -1.5s infinite}  /* Vitalik moved lower/left */
+.f6{top:26%;left:36%;width:110px;opacity:.65;animation:float 10s ease-in-out -2s infinite} /* matrix sticker */
 @keyframes float{50%{transform:translateY(-6px) rotate(2deg)}}
 
-/* Matrix overlay / scanlines */
-.matrix-overlay{position:absolute;inset:-5% -5% 0 -5%;background:url("assets/matrix.png") center/220px repeat;opacity:.12;mix-blend-mode:screen;pointer-events:none}
+/* scanlines */
 .fx-scan::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 3px);mix-blend-mode:overlay;opacity:.16}
 
 /* Marquee */
@@ -78,15 +88,6 @@ img{max-width:100%;display:block}
 .btn-mini{font-weight:900;text-transform:uppercase;font-size:12px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.3);background:var(--grad);color:#0b0e19}
 .stat{opacity:.8;font-size:12px}
 
-/* hover flair */
-.pulse-card::after{
-  content:"";position:absolute;inset:-2px;pointer-events:none;border-radius:18px;border:2px solid transparent;
-  background:linear-gradient(#0000,#0000) padding-box, var(--grad) border-box;opacity:0;
-  transition:opacity .15s ease;
-}
-.pulse-card:hover::after{opacity:1}
-.pulse-card:hover{transform:translateY(-2px);transition:transform .12s ease}
-
 /* CTA banner */
 .ctaBanner{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
 .ctaBanner h3{margin:0}
@@ -96,12 +97,19 @@ img{max-width:100%;display:block}
 .footer{border-top:1px solid rgba(255,255,255,.1);padding:28px 0;color:#b8c5ef}
 .footer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
-/* Montage Mode */
-.montage .matrix-overlay{opacity:.22;animation:drift 22s linear infinite}
-@keyframes drift{50%{background-position:60% 40%}}
+/* Montage Mode: brighter rain, faster marquee, livelier floats */
+.montage #matrixCanvas{opacity:.35}
+.montage .marquee__inner{animation-duration:16s}
 .montage .float{animation-duration:5.5s}
+
+/* Mobile tweaks */
+@media (max-width:700px){
+  .f5{left:4%; top:62%; width:110px;} /* vitalik smaller/lower on mobile */
+  .f2{right:10%; width:110px}
+  .f3{right:4%; width:100px}
+}
 
 /* reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .marquee__inner, .matrix-overlay, .float, .pulse-card{animation:none}
+  .marquee__inner, #matrixCanvas, .float, .pulse-card{animation:none}
 }
