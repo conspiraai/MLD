@@ -10,7 +10,6 @@
   <meta property="og:image" content="assets/vitalik.png" />
   <meta name="theme-color" content="#111628" />
   <link rel="icon" href="assets/devfuel.png" />
-  <link rel="preload" as="image" href="assets/matrix.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -32,24 +31,28 @@
 
   <!-- HERO -->
   <section class="hero fx-scan">
+    <!-- true Matrix code rain (behind everything) -->
+    <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+
     <div class="wrap hero-inner">
       <div class="logoMl">MLD</div>
       <h1 class="hero-title">Stimulated Launches</h1>
       <p class="hero-sub">
-        A <strong>daily dev pulse</strong> with bold red/white/blue montage energy — see the hottest repos, posts, and tools in under a minute.
+        A <strong>daily dev pulse</strong> with bold red/white/blue montage energy — see the hottest repos,
+        posts, and tools in under a minute.
       </p>
       <div class="cta-row">
         <a class="btn" href="#pulse">View Today’s Pulse</a>
-        <a class="btn outline" href="https://github.com/conspiraiAI/MLD" target="_blank" rel="noopener">View on GitHub</a>
       </div>
 
-      <!-- decorative brand stickers (pure décor) -->
+      <!-- decorative brand stickers (pure décor, under text) -->
       <img class="float f1" src="assets/letsbonk-pill.png" alt="" aria-hidden="true" />
       <img class="float f2" src="assets/pumpfun-pill.png" alt="" aria-hidden="true" />
       <img class="float f3" src="assets/devfuel.png" alt="" aria-hidden="true" />
       <img class="float f4" src="assets/github-octocat.png" alt="" aria-hidden="true" />
       <img class="float f5" src="assets/vitalik.png" alt="" aria-hidden="true" />
-      <div class="matrix-overlay" aria-hidden="true"></div>
+      <!-- your original matrix.png reused as a small sticker -->
+      <img class="float f6" src="assets/matrix.png" alt="" aria-hidden="true" />
     </div>
 
     <!-- MARQUEE -->
@@ -83,7 +86,7 @@
       <div class="ctaBanner card">
         <div class="banner-copy">
           <h3>Join the Locker Room</h3>
-          <p>Hype launches, share ideas, and see what top builders are shipping.</p>
+        <p>Hype launches, share ideas, and see what top builders are shipping.</p>
         </div>
         <a class="btn" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
       </div>
