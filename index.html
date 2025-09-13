@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>MLD — Major League Dev | 2010 Montage Energy</title>
+  <title>MLD — Major League Dev | Stimulated Launches</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Major League Dev — an MLG montage-style sticker shrine for ruthless builders. Stimulated launches only." />
+  <meta name="description" content="Major League Dev — a community dev platform to share ideas, spotlight top builders, and ship stimulated launches." />
   <meta property="og:title" content="MLD — Major League Dev" />
-  <meta property="og:description" content="Old-school MLG energy. Sticker shrine + interactive montage playground." />
+  <meta property="og:description" content="A community dev platform for builders & thinkers. Share ideas, track launches, and remix the culture." />
   <meta property="og:image" content="assets/vitalik.png" />
   <meta name="theme-color" content="#12172a" />
   <link rel="icon" href="assets/devfuel.png" />
@@ -17,15 +17,15 @@
   <!-- TOPBAR -->
   <header class="topbar">
     <div class="wrap">
-      <a class="brand" href="#" aria-label="Major League Dev">
+      <a class="brand" href="#">
         <span class="badge">MLD</span>
         <span class="brand-text">Major League Dev</span>
       </a>
       <nav class="nav">
-        <a class="nav-link" href="#stickers">Stickers</a>
-        <a class="nav-link" href="#playground">Playground</a>
+        <a class="nav-link" href="#features">Features</a>
+        <a class="nav-link" href="#feed">Community</a>
         <a class="nav-link" href="#about">About</a>
-        <button id="montageToggle" class="btn ghost" aria-pressed="false" title="Toggle montage chaos">Montage Mode</button>
+        <button id="montageToggle" class="btn ghost" aria-pressed="false" title="Toggle FX">Montage Mode</button>
         <a class="btn tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
       </nav>
     </div>
@@ -34,91 +34,101 @@
   <!-- HERO -->
   <section class="hero fx-scan">
     <div class="wrap hero-inner">
-      <div class="logoLockup">
-        <div class="logoMl d"><span>MLD</span></div>
-        <h1 class="hero-title">Stimulated Launches • 2010 MLG Energy</h1>
-      </div>
+      <div class="logoMl"><span>MLD</span></div>
+      <h1 class="hero-title">Stimulated Launches</h1>
       <p class="hero-sub">
-        A cult-coded sticker shrine & montage playground for devs and degens. Clean base assets. Chaos on command.
+        A <strong>community dev platform</strong> for builders & thinkers — see what top developers are shipping,
+        drop your own ideas, and remix the culture.
       </p>
       <div class="cta-row">
-        <a class="btn" href="#stickers">View Sticker Pack</a>
-        <a class="btn ghost" href="#playground">Open Playground</a>
-        <a class="btn outline" href="https://github.com/conspiraiAI/MLD" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn" href="#feed">Explore Community</a>
+        <a class="btn ghost" href="https://github.com/conspiraiAI/MLD" target="_blank" rel="noopener">View on GitHub</a>
       </div>
 
-      <!-- floating hero chips (subtle parallax) -->
-      <img class="float f1" src="assets/devfuel.png" alt="" aria-hidden="true" />
-      <img class="float f2" src="assets/pumpfun-pill.png" alt="" aria-hidden="true" />
-      <img class="float f3" src="assets/letsbonk-pill.png" alt="" aria-hidden="true" />
-      <img class="float f4" src="assets/github-octocat.png" alt="" aria-hidden="true" />
+      <!-- decorative brand stickers (cutouts, no interaction) -->
+      <img class="float f-pill-green" src="assets/pumpfun-pill.png" alt="" aria-hidden="true" />
+      <img class="float f-pill-orange" src="assets/letsbonk-pill.png" alt="" aria-hidden="true" />
+      <img class="float f-can" src="assets/devfuel.png" alt="" aria-hidden="true" />
+      <img class="float f-octo" src="assets/github-octocat.png" alt="" aria-hidden="true" />
+      <img class="float f-vitalik" src="assets/vitalik.png" alt="" aria-hidden="true" />
       <div class="matrix-overlay" aria-hidden="true"></div>
     </div>
 
     <!-- MARQUEE -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee__inner">
-        <span>stimulated shipping</span>
-        <span>mlg 2010 montage</span>
-        <span>dealer lord of liquidity</span>
-        <span>no-scope deploys</span>
-        <span>quad-feed tests</span>
-        <span>aim-bot commits</span>
+        <span>share ideas</span>
+        <span>stimulated launches</span>
+        <span>follow top builders</span>
+        <span>ship fast</span>
         <span>major league dev</span>
       </div>
     </div>
   </section>
 
-  <!-- STICKER WALL -->
-  <section id="stickers" class="section">
+  <!-- FEATURES -->
+  <section id="features" class="section">
     <div class="wrap">
-      <h2 class="section-title">Sticker Pack</h2>
-      <p class="mini">Transparent PNGs • 1:1 • thick white outline • classic montage cutouts</p>
-
-      <div id="stickerGrid" class="grid">
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/vitalik.png" alt="Vitalik Buterin — laser eyes" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/cz.png" alt="CZ tossing black/yellow pills" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/saylor.png" alt="Michael Saylor with Bitcoin trophy" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/anatoly.png" alt="Anatoly Yakovenko with keyboard sword" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/pumpfun-pill.png" alt="PumpFun pill" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/letsbonk-pill.png" alt="Let’s Bonk pill" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/devfuel.png" alt="Dev Fuel can" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/github-octocat.png" alt="Glitched Octocat" /></figure>
-        <figure class="sticker-card reveal"><img loading="lazy" src="assets/windows-error.png" alt="Windows error popup" /></figure>
+      <h2 class="section-title">What you can do</h2>
+      <div class="features">
+        <article class="card feature">
+          <h3>Share Micro-Ideas</h3>
+          <p>Post quick concepts, research notes, or launch plans. Keep it lightweight and shippable.</p>
+        </article>
+        <article class="card feature">
+          <h3>Track Top Builders</h3>
+          <p>See what leading devs are experimenting with — stacks, repos, and live demos.</p>
+        </article>
+        <article class="card feature">
+          <h3>Stimulated Launches</h3>
+          <p>Celebrate deploys with montage-style highlights and community reactions.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- PLAYGROUND -->
-  <section id="playground" class="section section-dark fx-scan">
+  <!-- COMMUNITY FEED (static placeholders now; wire real data later) -->
+  <section id="feed" class="section section-dark fx-scan">
     <div class="wrap">
-      <div class="playhead">
-        <h2 class="section-title">Montage Playground</h2>
-        <div class="controls">
-          <select id="addSelect" class="sel">
-            <option value="assets/vitalik.png">Vitalik</option>
-            <option value="assets/cz.png">CZ</option>
-            <option value="assets/saylor.png">Saylor</option>
-            <option value="assets/anatoly.png">Anatoly</option>
-            <option value="assets/pumpfun-pill.png">PumpFun Pill</option>
-            <option value="assets/letsbonk-pill.png">Let’s Bonk Pill</option>
-            <option value="assets/devfuel.png">Dev Fuel</option>
-            <option value="assets/github-octocat.png">Octocat</option>
-            <option value="assets/windows-error.png">Windows Error</option>
-            <option value="assets/matrix.png">Matrix Overlay</option>
-          </select>
-          <button id="addBtn" class="btn">Add Sticker</button>
-          <button id="shuffleBtn" class="btn ghost">Shuffle</button>
-          <button id="clearBtn" class="btn outline">Clear</button>
-          <button id="saveBtn" class="btn">Save</button>
-          <button id="loadBtn" class="btn ghost">Load</button>
-          <button id="exportBtn" class="btn">Export PNG</button>
-        </div>
-      </div>
+      <h2 class="section-title">Community Feed</h2>
+      <p class="mini">A rolling stream of ideas & launches from builders. (Sample posts — connect data later.)</p>
 
-      <div class="stageWrap">
-        <canvas id="stage" width="960" height="540" aria-label="Montage canvas" role="img"></canvas>
-        <div class="hint mini">Tip: drag with one finger/mouse to move; two-finger/Alt+wheel to scale; Shift+wheel to rotate; double-tap to delete; click to bring to front.</div>
+      <div class="feed">
+        <article class="post">
+          <div class="post-head">
+            <img class="post-ava" src="assets/anatoly.png" alt="" />
+            <div>
+              <div class="handle">@deploy_lord</div>
+              <div class="time">2h ago • Concept</div>
+            </div>
+          </div>
+          <p class="post-body">Hot take: “feature flags for DB migrations” using a tiny DSL + rollback semantics. want collaborators?</p>
+          <div class="post-tags"><span>#solana</span><span>#runtime</span><span>#migrations</span></div>
+        </article>
+
+        <article class="post">
+          <div class="post-head">
+            <img class="post-ava" src="assets/cz.png" alt="" />
+            <div>
+              <div class="handle">@dealer_liquidity</div>
+              <div class="time">6h ago • Launch</div>
+            </div>
+          </div>
+          <p class="post-body">rolling out per-pool risk scoring. ships behind a soft gate — dm for audit eyes.</p>
+          <div class="post-tags"><span>#risk</span><span>#defi</span></div>
+        </article>
+
+        <article class="post">
+          <div class="post-head">
+            <img class="post-ava" src="assets/saylor.png" alt="" />
+            <div>
+              <div class="handle">@corp_dev</div>
+              <div class="time">1d ago • Notes</div>
+            </div>
+          </div>
+          <p class="post-body">benchmarking WASM vs native for plugin sandbox. wasm wins at isolation, native wins at raw perf. tradeoffs inside.</p>
+          <div class="post-tags"><span>#wasm</span><span>#security</span><span>#bench</span></div>
+        </article>
       </div>
     </div>
   </section>
@@ -126,11 +136,11 @@
   <!-- ABOUT -->
   <section id="about" class="section">
     <div class="wrap">
-      <div class="card">
+      <div class="card about">
         <h2>What is MLD?</h2>
         <p>
-          <strong>Major League Dev</strong> is a revival of the 2010 montage era for crypto devs: clean base stickers,
-          red/white/blue gradients, and switchable chaos. Use the Playground to build your own collages, then export a PNG.
+          <strong>Major League Dev</strong> is a <em>social space for developers</em> — a montage-styled hub where you can
+          follow top builders, share ideas, and push launches forward together. Clean base design. Bold, red/white/blue energy.
         </p>
       </div>
     </div>
