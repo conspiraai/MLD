@@ -25,33 +25,33 @@ img{max-width:100%;display:block}
 .btn.ghost{background:rgba(255,255,255,.06);color:#e9eefc;border-color:rgba(255,255,255,.22)}
 .btn.tg{white-space:nowrap}
 
-/* Hero */
+/* Hero layering: rain (0) -> decor (1) -> text (2) */
 .hero{position:relative;overflow:hidden}
-.hero-inner{padding:92px 0 42px;position:relative;z-index:1} /* keep above rain + floats */
+#matrixCanvas{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:0; opacity:.18; mix-blend-mode:screen; pointer-events:none;
+}
+.hero-decor{position:absolute; inset:0; z-index:1; pointer-events:none}
+.hero-inner{position:relative; z-index:2}
+
 .logoMl{display:inline-grid;place-items:center;border-radius:12px;padding:8px 14px;background:var(--grad);color:#0b0e19;border:2px solid rgba(255,255,255,.45);box-shadow:var(--shadow);font-weight:1000;letter-spacing:.6px;margin-bottom:8px}
 .hero-title{font-size:clamp(38px,6.4vw,76px);line-height:1.05;margin:0 0 8px;font-weight:1000;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-sub{max-width:760px;opacity:.92;margin:0 0 18px}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
 
-/* Matrix rain canvas (behind content) */
-#matrixCanvas{
-  position:absolute; inset:0; width:100%; height:100%;
-  z-index:0; opacity:.22; mix-blend-mode:screen; pointer-events:none;
-}
-
-/* Decorative floats sit UNDER the text now */
+/* Floats (decor images) */
 .float{
-  position:absolute; z-index:0; /* hero-inner content is z-index:1 */
+  position:absolute;
   filter:drop-shadow(0 6px 0 #fff) drop-shadow(0 10px 22px rgba(0,0,0,.45));
   image-rendering:-webkit-optimize-contrast; pointer-events:none;
 }
-.f1{top:10%;left:6%;width:120px;animation:float 8s ease-in-out -1s infinite}
-.f2{top:8%;right:18%;width:140px;animation:float 8s ease-in-out infinite}
-.f3{top:18%;right:6%;width:120px;animation:float 7s ease-in-out -2s infinite}
-.f4{top:44%;right:20%;width:140px;animation:float 9s ease-in-out -3s infinite}
-.f5{top:58%;left:8%;width:140px;animation:float 9s ease-in-out -1.5s infinite}  /* Vitalik moved lower/left */
-.f6{top:26%;left:36%;width:110px;opacity:.65;animation:float 10s ease-in-out -2s infinite} /* matrix sticker */
-@keyframes float{50%{transform:translateY(-6px) rotate(2deg)}}
+.f1{ top:10%; left:6%;  width:120px; animation:float 8s ease-in-out -1s infinite; }
+.f2{ top:8%;  right:18%; width:140px; animation:float 8s ease-in-out infinite; }
+.f3{ top:18%; right:6%;  width:120px; animation:float 7s ease-in-out -2s infinite; }
+.f4{ top:44%; right:20%; width:140px; animation:float 9s ease-in-out -3s infinite; }
+.f5{ top:60%; left:6%;  width:120px; animation:float 9s ease-in-out -1.5s infinite; } /* Vitalik lower-left */
+.f6{ top:26%; left:36%; width:110px; opacity:.65; animation:float 10s ease-in-out -2s infinite; }
+@keyframes float { 50% { transform: translateY(-6px) rotate(2deg); } }
 
 /* scanlines */
 .fx-scan::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 3px);mix-blend-mode:overlay;opacity:.16}
@@ -97,16 +97,17 @@ img{max-width:100%;display:block}
 .footer{border-top:1px solid rgba(255,255,255,.1);padding:28px 0;color:#b8c5ef}
 .footer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
-/* Montage Mode: brighter rain, faster marquee, livelier floats */
-.montage #matrixCanvas{opacity:.35}
-.montage .marquee__inner{animation-duration:16s}
-.montage .float{animation-duration:5.5s}
+/* Montage Mode — obvious difference */
+.montage #matrixCanvas{opacity:.45}
+.montage .marquee__inner{animation-duration:12s !important}
+.montage .hero-title{ text-shadow:0 0 18px rgba(255,255,255,.25), 0 0 38px rgba(43,91,255,.25) }
+.montage .hero-decor .float{animation-duration:5.2s; transform:scale(1.04)}
 
-/* Mobile tweaks */
+/* Mobile tweaks so stickers never cover text */
 @media (max-width:700px){
-  .f5{left:4%; top:62%; width:110px;} /* vitalik smaller/lower on mobile */
-  .f2{right:10%; width:110px}
-  .f3{right:4%; width:100px}
+  .f5{ left:4%; top:62%; width:110px; } /* Vitalik smaller/lower */
+  .f2{ right:10%; width:110px }
+  .f3{ right:4%;  width:100px }
 }
 
 /* reduced motion */
