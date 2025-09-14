@@ -2,8 +2,12 @@ name: Pages (Preview)
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages-preview-${{ github.ref }}
@@ -17,7 +21,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: "."   # static site lives in repo root
+          path: "."   # your site is static files in repo root
 
   deploy:
     needs: build
@@ -26,7 +30,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
         with:
-          preview: true   # this makes it a PR preview, not a main deploy
+          preview: true
