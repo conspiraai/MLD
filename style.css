@@ -62,3 +62,31 @@ img{max-width:100%;height:auto}
   .links{display:none}
   .stage img{width:64px}
 }
+
+/* --- MLD brand header lockup --- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand .logo {
+  width: 32px;        /* adjust to taste: 28–40 works well */
+  height: auto;       /* keeps aspect ratio */
+  display: block;
+}
+
+.logo-text {
+  background: var(--brand, linear-gradient(90deg, #ff616e, #99b4ff));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;        /* gradient text */
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1;
+}
+
+/* optional: slightly tighten the header on mobile */
+@media (max-width: 520px) {
+  .brand .logo { width: 28px; }
+}
