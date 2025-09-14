@@ -1,127 +1,41 @@
-/* ===========================================================
-   MLD: Dev Pulse (JSON-powered) + Matrix Rain + Montage Mode
-   =========================================================== */
+/* =========
+   LIVE FEED MVP
+   - GitHub “trending-ish”: repos created in last 7 days, by stars
+   - Hacker News: dev stories via Algolia API with points filter
+   - Montage Mode: stickers bounce inside the hero code-rain band
+   ========= */
 
-const JSON_URL = 'data/repos.json'; // updated daily by GitHub Action
+const JSON_LIMIT = 12;
+const cardsEl = document.getElementById('cards');
+const emptyEl = document.getElementById('empty');
 
-// ---------- Utilities ----------
-const $ = (sel, el = document) => el.querySelector(sel);
-const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
-const fmt = n => n >= 1000 ? `${(n/1000).toFixed(1)}k` : `${n}`;
+/* --------- Matrix code rain (visual only) --------- */
+(() => {
+  const c = document.getElementById('rain');
+  const ctx = c.getContext('2d');
+  function size() { c.width = c.clientWidth; c.height = c.clientHeight; }
+  size(); addEventListener('resize', size);
 
-// ---------- Render Feed ----------
-async function loadFeed() {
-  const feed = $('#feed');
-  if (!feed) return;
+  const glyphs = 'アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const cols = () => Math.floor(c.width / 18);
+  let drops = new Array(cols()).fill(0).map(()=> Math.random()*c.height);
 
-  try {
-    const res = await fetch(`${JSON_URL}?t=${Date.now()}`, { cache: 'no-store' });
-    const data = await res.json();
-
-    feed.innerHTML = data.items.map(cardHTML).join('');
-    hookOpenButtons();
-  } catch (e) {
-    console.error('Failed to load feed JSON:', e);
-    feed.innerHTML = `<div class="empty">Couldn’t load today’s data. Try again soon.</div>`;
-  }
-}
-
-function cardHTML(item) {
-  const {
-    source = 'GitHub',
-    title,
-    url,
-    description = '',
-    language,
-    stars = 0,
-    owner = '',
-    tags = []
-  } = item;
-
-  const tagChips = [
-    language && `#${language.toLowerCase()}`,
-    ...tags.map(t => `#${t}`)
-  ].filter(Boolean).slice(0, 4).map(t => `<span class="tag">${t}</span>`).join('');
-
-  return `
-  <article class="card" role="listitem">
-    <header class="meta">
-      <span class="src">${source}</span>
-      ${owner ? `<span class="owner">${owner}</span>` : ''}
-    </header>
-    <h3 class="title">${title}</h3>
-    <p class="desc">${description}</p>
-    <div class="tags">${tagChips}</div>
-    <footer class="row">
-      <span class="stat">⭐ ${fmt(stars)}</span>
-      <a href="${url}" target="_blank" rel="noopener" class="btn mini pill-rwb">OPEN</a>
-    </footer>
-  </article>`;
-}
-
-function hookOpenButtons() {
-  // For future analytics or montage pops
-}
-
-// ---------- Filters (basic stub; “All/Code” active) ----------
-function setupFilters() {
-  const chips = $$('.chip');
-  chips.forEach(chip => chip.addEventListener('click', () => {
-    chips.forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    // Today everything is "code"; later we’ll filter by item.type
-  }));
-}
-
-// ---------- Matrix Rain (cleaner, closer to movie) ----------
-function startMatrix() {
-  const canvas = $('#matrixCanvas');
-  if (!canvas) return;
-
-  const ctx = canvas.getContext('2d');
-  const glyphs = 'アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&?';
-  const cols = [];
-  let w, h, fontSize, columns;
-
-  function resize() {
-    w = canvas.width = canvas.offsetWidth;
-    h = canvas.height = canvas.offsetHeight;
-    fontSize = Math.max(14, Math.floor(w / 75));
-    columns = Math.floor(w / fontSize);
-    cols.length = 0;
-    for (let i = 0; i < columns; i++) cols[i] = (Math.random() * -50) | 0;
-    ctx.font = `${fontSize}px monospace`;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function draw() {
-    // translucent fade to create trails
-    ctx.fillStyle = 'rgba(7, 22, 18, 0.15)';
-    ctx.fillRect(0, 0, w, h);
-
-    for (let i = 0; i < columns; i++) {
-      const x = i * fontSize;
-      const y = cols[i] * fontSize;
-
-      // bright head
-      ctx.fillStyle = '#aef1c1';
-      ctx.fillText(glyphs[Math.random() * glyphs.length | 0], x, y);
-
-      // dim tail
-      ctx.fillStyle = '#0ac26b';
-      ctx.fillText(glyphs[Math.random() * glyphs.length | 0], x, y - fontSize);
-
-      // move column
-      if (y > h + Math.random() * 300) cols[i] = 0;
-      else cols[i]++;
+  function draw(){
+    ctx.fillStyle = 'rgba(8,12,16,0.35)'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle = '#39ff14';
+    ctx.font = '16px monospace';
+    for (let i=0;i<drops.length;i++){
+      const text = glyphs[Math.floor(Math.random()*glyphs.length)];
+      const x = i*18, y = drops[i];
+      ctx.fillText(text,x,y);
+      drops[i] = y > c.height && Math.random()>0.975 ? 0 : y + (12 + Math.random()*8);
     }
     requestAnimationFrame(draw);
   }
   draw();
-}
+})();
 
-// ---------- Montage Mode (stickers bounce *inside* hero only) ----------
+/* --------- Stickers + Montage Mode --------- */
 const STICKERS = [
   'assets/letsbonk-pill.png',
   'assets/pumpfun-pill.png',
@@ -133,79 +47,150 @@ const STICKERS = [
   'assets/saylor.png',
   'assets/anatoly.png'
 ];
+const stage = document.getElementById('stickerStage');
+const montageBtn = document.getElementById('montageBtn');
+const montageState = document.getElementById('montageState');
+let bouncers = [];
+let rafId = 0;
 
-let montageOn = false;
-let raf;
-const bouncers = [];
-
-function toggleMontage() {
-  montageOn = !montageOn;
-  $('#montageState').textContent = montageOn ? 'ON' : 'OFF';
-  const arena = $('#stickerArena');
-  if (!arena) return;
-
-  arena.classList.toggle('active', montageOn);
-  if (!montageOn) return stopBouncers();
-
-  // spawn stickers to the right side (not covering text)
-  arena.innerHTML = '';
-  const { width, height } = arena.getBoundingClientRect();
-  const minX = Math.floor(width * 0.55); // right 45%
-  STICKERS.forEach(src => {
-    const el = document.createElement('img');
-    el.src = src;
-    el.alt = '';
-    el.className = 'sticker';
-    arena.appendChild(el);
-
-    const w = 72 + Math.random() * 36;
-    el.style.width = `${w}px`;
-    const x = minX + Math.random() * (width - minX - w);
-    const y = Math.random() * (height - w);
-    el.style.transform = `translate(${x}px, ${y}px)`;
-
-    const s = 0.6 + Math.random() * 0.9;
-    bouncers.push({
-      el, x, y, w,
-      vx: (Math.random() * 2 + 1) * (Math.random() < .5 ? -1 : 1) * s,
-      vy: (Math.random() * 2 + 1) * (Math.random() < .5 ? -1 : 1) * s
-    });
+function spawnStickers(){
+  stage.innerHTML = '';
+  bouncers = STICKERS.map(src => {
+    const img = new Image();
+    img.src = src; img.alt = '';
+    stage.appendChild(img);
+    const rect = stage.getBoundingClientRect();
+    const w = img.width || 84, h = img.height || 84;
+    return {
+      el: img,
+      x: Math.random()*(rect.width-w),
+      y: Math.random()*(rect.height-h),
+      vx: (Math.random()*2+1)*(Math.random()<.5?-1:1),
+      vy: (Math.random()*2+1)*(Math.random()<.5?-1:1)
+    };
   });
-
-  animateBouncers();
 }
-
-function animateBouncers() {
-  const arena = $('#stickerArena');
-  const step = () => {
-    const rect = arena.getBoundingClientRect();
-    bouncers.forEach(b => {
-      b.x += b.vx; b.y += b.vy;
-
-      // bounce
-      if (b.x <= 0 || b.x + b.w >= rect.width) b.vx *= -1;
-      if (b.y <= 0 || b.y + b.w >= rect.height) b.vy *= -1;
-
-      b.el.style.transform = `translate(${b.x}px, ${b.y}px)`;
-    });
-    raf = requestAnimationFrame(step);
-  };
-  raf = requestAnimationFrame(step);
+function tick(){
+  const r = stage.getBoundingClientRect();
+  bouncers.forEach(b=>{
+    b.x += b.vx; b.y += b.vy;
+    if (b.x<0||b.x>r.width-84) b.vx*=-1;
+    if (b.y<0||b.y>r.height-84) b.vy*=-1;
+    b.el.style.transform = `translate(${b.x}px,${b.y}px)`;
+  });
+  rafId = requestAnimationFrame(tick);
 }
-
-function stopBouncers() {
-  cancelAnimationFrame(raf);
-  bouncers.length = 0;
-  const arena = $('#stickerArena');
-  if (arena) arena.innerHTML = '';
+function startMontage(){
+  montageState.textContent = 'ON';
+  stage.style.pointerEvents = 'none';
+  spawnStickers();
+  cancelAnimationFrame(rafId);
+  tick();
 }
-
-// ---------- Init ----------
-document.addEventListener('DOMContentLoaded', () => {
-  startMatrix();
-  setupFilters();
-  loadFeed();
-
-  const btn = $('#montageBtn');
-  if (btn) btn.addEventListener('click', toggleMontage);
+function stopMontage(){
+  montageState.textContent = 'OFF';
+  cancelAnimationFrame(rafId);
+  stage.innerHTML = '';
+}
+montageBtn.addEventListener('click', ()=>{
+  (montageState.textContent === 'OFF') ? startMontage() : stopMontage();
 });
+
+/* --------- Data Sources --------- */
+
+async function fetchGitHub() {
+  // last 7 days
+  const since = new Date(Date.now() - 7*24*3600*1000).toISOString().slice(0,10);
+  const url = `https://api.github.com/search/repositories?q=created:>${since}+stars:>20&sort=stars&order=desc&per_page=${JSON_LIMIT}`;
+  const res = await fetch(url, { headers: { 'Accept':'application/vnd.github+json' }});
+  if (!res.ok) throw new Error('GitHub API failed');
+  const json = await res.json();
+  return json.items.map(r => ({
+    id: `gh_${r.id}`,
+    source: 'GitHub',
+    title: r.full_name.replace('/', ' / '),
+    url: r.html_url,
+    summary: r.description || 'No description.',
+    badges: [r.language || 'other', `★ ${r.stargazers_count.toLocaleString()}`],
+    right: `+${r.stargazers_count.toLocaleString()}★`,
+    kind: 'code',
+    icon: 'assets/devfuel.png'
+  }));
+}
+
+async function fetchHN() {
+  const q = encodeURIComponent('javascript OR typescript OR rust OR python OR ai OR react OR svelte OR bun');
+  const url = `https://hn.algolia.com/api/v1/search?tags=story&numericFilters=points>80&hitsPerPage=${JSON_LIMIT}&query=${q}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HN API failed');
+  const json = await res.json();
+  return json.hits.map(h => ({
+    id: `hn_${h.objectID}`,
+    source: 'Hacker News',
+    title: h.title,
+    url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+    summary: h._highlightResult && h._highlightResult.title ? ' ' : '',
+    badges: ['discussion', `${h.points} pts`],
+    right: `${h.points} pts`,
+    kind: 'articles',
+    icon: 'assets/letsbonk-pill.png'
+  }));
+}
+
+/* --------- Render --------- */
+
+function badge(html){ return `<span class="b">${html}</span>`; }
+
+function cardHTML(item){
+  return `
+    <article class="card" data-kind="${item.kind}">
+      <div class="src"><img src="${item.icon}" alt="" width="18" height="18" style="border-radius:4px"> ${item.source}</div>
+      <h3>${item.title}</h3>
+      <p>${item.summary ?? ''}</p>
+      <div class="badges">${item.badges.map(badge).join('')}</div>
+      <div class="meta">
+        <a class="open" href="${item.url}" target="_blank" rel="noopener">OPEN</a>
+        <span>${item.right ?? ''}</span>
+      </div>
+    </article>
+  `;
+}
+
+function render(items){
+  if (!items.length){ cardsEl.innerHTML = ''; emptyEl.hidden = false; return; }
+  emptyEl.hidden = true;
+  cardsEl.innerHTML = items.map(cardHTML).join('');
+}
+
+/* --------- Filters --------- */
+const tabs = [...document.querySelectorAll('.tab')];
+function applyFilter(kind){
+  tabs.forEach(t=>t.classList.toggle('active', t.dataset.filter===kind));
+  const cards = [...document.querySelectorAll('.card')];
+  let shown = 0;
+  cards.forEach(c=>{
+    const show = (kind==='all'|| c.dataset.kind===kind);
+    c.style.display = show? 'block':'none';
+    if (show) shown++;
+  });
+  emptyEl.hidden = shown>0;
+}
+tabs.forEach(t=> t.addEventListener('click', ()=> applyFilter(t.dataset.filter)));
+
+/* --------- Boot --------- */
+(async function boot(){
+  try{
+    const [gh, hn] = await Promise.all([
+      fetchGitHub().catch(()=>[]),
+      fetchHN().catch(()=>[])
+    ]);
+    // Merge: interleave GH + HN
+    const merged = [];
+    const max = Math.max(gh.length, hn.length);
+    for (let i=0;i<max;i++){ if (gh[i]) merged.push(gh[i]); if (hn[i]) merged.push(hn[i]); }
+    render(merged);
+  }catch(err){
+    console.error(err);
+    cardsEl.innerHTML = `<div class="empty">Failed to load live data. Try again later.</div>`;
+  }
+})();
