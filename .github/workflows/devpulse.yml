@@ -3,7 +3,8 @@ name: Build Dev Pulse (daily)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 0 * * *"   # daily at 00:05 UTC
+    # 12:00 AM UTC daily (8:00 PM EDT currently)
+    - cron: "0 0 * * *"
 
 permissions:
   contents: write
@@ -11,47 +12,27 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Generate repos.json with GitHub trending-ish search
-        uses: actions/github-script@v7
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          script: |
-            const fs = require('fs');
-            // Pull popular repos from the last ~7 days
-            const since = new Date(Date.now() - 7*24*60*60*1000).toISOString().slice(0,10);
-            const q = `created:>=${since}`;
-            const perPage = 30;
+          node-version: "20"
 
-            const res = await github.rest.search.repos({
-              q,
-              sort: 'stars',
-              order: 'desc',
-              per_page: perPage,
-            });
-
-            const items = res.data.items.map(r => ({
-              id: r.id,
-              source: "GitHub",
-              title: `${r.owner.login} / ${r.name}`,
-              url: r.html_url,
-              description: r.description || "No description.",
-              language: r.language || "Other",
-              stars: r.stargazers_count || 0,
-              topics: r.topics || [],
-              owner_avatar: r.owner.avatar_url
-            }));
-
-            const out = { fetched_at: new Date().toISOString(), items };
-            fs.mkdirSync('data', { recursive: true });
-            fs.writeFileSync('data/repos.json', JSON.stringify(out, null, 2));
-
-      - name: Commit repos.json
+      - name: Build pulse JSON
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/repos.json
-          git commit -m "chore: update repos.json [skip ci]" || echo "No changes"
-          git push  
+          node --version
+          node scripts/buildPulse.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit data
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: MLD Bot
+          author_email: bot@majorleaguedev.com
+          message: "chore(data): refresh dev pulse JSON"
+          add: "data/repos.json"
