@@ -90,3 +90,9 @@ img{max-width:100%;height:auto}
 @media (max-width: 520px) {
   .brand .logo { width: 28px; }
 }
+
+/* Pill logo sizing */
+.pill-logo {
+  height: 22px;       /* adjust if you want it a little bigger/smaller */
+  vertical-align: middle;
+}
