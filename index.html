@@ -2,98 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>MLD — Major League Dev | Stimulated Launches</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="MLD is a daily dev pulse — see the hottest repos, posts, tools, and builders in under a minute." />
-  <meta name="theme-color" content="#0b0f18" />
-  <link rel="icon" href="assets/devfuel.png" />
+  <title>MLD — Major League Dev | Stimulated Launches</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="wrap">
-      <a class="brand" href="#">
-        <span class="badge">MLD</span>
-        <span class="brand-text">Major League Dev</span>
-      </a>
-      <nav class="nav">
-        <a class="nav-link" href="#pulse">Dev Pulse</a>
-        <a class="nav-link" href="#about">About</a>
-        <button id="montageToggle" class="btn ghost" aria-pressed="false">Montage Mode</button>
-        <a class="btn tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
-      </nav>
-    </div>
+  <!-- NAV -->
+  <header class="nav">
+    <a class="brand" href="#"><span class="pill pill-rwb">MLD</span> Major League Dev</a>
+    <nav>
+      <a class="navlink" href="#pulse">Dev Pulse</a>
+      <a class="navlink" href="#about">About</a>
+      <button id="montageBtn" class="btn pill-rwb">Montage: <span id="montageState">OFF</span></button>
+      <a class="btn cta" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
+    </nav>
   </header>
 
-  <!-- HERO: Matrix rain background; stickers only appear here in Montage Mode -->
-  <section id="hero" class="hero fx-scan">
+  <!-- HERO with matrix canvas -->
+  <section class="hero">
     <canvas id="matrixCanvas" aria-hidden="true"></canvas>
-
-    <div class="wrap hero-inner">
-      <div class="logoMl">MLD</div>
-      <h1 class="hero-title">Stimulated Launches</h1>
-      <p class="hero-sub">
-        A <strong>daily dev pulse</strong> with bold red/white/blue montage energy — see the hottest repos,
-        posts, and tools in under a minute.
-      </p>
-      <div class="cta-row">
-        <a class="btn" href="#pulse">View Today’s Pulse</a>
-      </div>
+    <div class="hero-inner">
+      <span class="pill pill-rwb small">MLD</span>
+      <h1 class="headline">Stimulated Launches</h1>
+      <p class="sub">A daily dev pulse with bold red/white/blue montage energy — see the hottest repos, posts, and tools in under a minute.</p>
+      <a href="#pulse" class="btn btn-lg pill-rwb">View Today’s Pulse</a>
     </div>
-
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__inner">
-        <span>stimulated launches</span><span>dev pulse</span><span>frontend fire</span>
-        <span>backend beasts</span><span>ai all-stars</span><span>major league dev</span>
-      </div>
-    </div>
+    <!-- Montage sticker playground (empty by default; populated only when montage is ON) -->
+    <div id="stickerArena" class="arena" aria-hidden="true"></div>
   </section>
 
-  <!-- DEV PULSE -->
-  <section id="pulse" class="section">
-    <div class="wrap">
-      <div class="pulse-head">
-        <h2 class="section-title">Today’s Dev Pulse</h2>
-        <div class="filters">
-          <button class="chip active" data-filter="all">All</button>
-          <button class="chip" data-filter="code">Code</button>
-          <button class="chip" data-filter="articles">Articles</button>
-          <button class="chip" data-filter="packages">Packages</button>
-        </div>
-      </div>
-      <div id="pulseGrid" class="grid"></div>
+  <!-- FILTER STRIP -->
+  <div class="strip">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="code">Code</button>
+    <button class="chip" data-filter="articles" disabled>Articles</button>
+    <button class="chip" data-filter="packages" disabled>Packages</button>
+  </div>
 
-      <div class="ctaBanner card">
-        <div class="banner-copy">
-          <h3>Join the Locker Room</h3>
-          <p>Hype launches, share ideas, and see what top builders are shipping.</p>
-        </div>
-        <a class="btn" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
-      </div>
+  <!-- DEV PULSE FEED -->
+  <main id="pulse" class="feed">
+    <h2>Today’s Dev Pulse</h2>
+    <div id="feed" class="grid" role="list"></div>
+  </main>
+
+  <!-- COMMUNITY CTA -->
+  <section class="locker">
+    <div class="card">
+      <h3>Join the Locker Room</h3>
+      <p>Hype launches, share ideas, and see what top builders are shipping.</p>
+      <a class="btn pill-rwb" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
     </div>
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="section">
-    <div class="wrap">
-      <div class="card about">
-        <h2>What is MLD?</h2>
-        <p>
-          <strong>Major League Dev</strong> is a social space for developers — a fast, curated pulse of what’s trending,
-          wrapped in a bold montage identity. Check in daily, discover tools worth trying, and plug into a culture that ships.
-        </p>
-      </div>
-    </div>
+  <section id="about" class="about">
+    <h2>What is MLD?</h2>
+    <p><strong>Major League Dev</strong> is a social space for developers — a fast, curated pulse of what’s trending, wrapped in a bold montage identity. Check in daily, discover tools worth trying, and plug into a culture that ships.</p>
   </section>
 
   <footer class="footer">
-    <div class="wrap footer-row">
-      <small class="mini">© <span id="yr"></span> Major League Dev</small>
-      <a class="mini tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram @majorleaguedev</a>
-    </div>
+    <span>© 2025 Major League Dev</span>
+    <a href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram @majorleaguedev</a>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
