@@ -2,12 +2,8 @@ name: Pages (Preview)
 
 on:
   pull_request:
-    paths:
-      - "**/*.html"
-      - "**/*.css"
-      - "**/*.js"
-      - "assets/**"
-      - "data/**"
+    branches: [ main ]   # runs when you open/updates a PR into main
+  workflow_dispatch:      # let you run it manually
 
 permissions:
   contents: read
@@ -15,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages-${{ github.ref }}"
+  group: pages-preview-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,19 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # For a static site, just upload the repo root as the artifact
-      - uses: actions/upload-pages-artifact@v3
+
+      # If you ever add a build step (npm, etc.), do it here.
+      # For a static site, just upload the repo root.
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "."
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          preview: true
