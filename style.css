@@ -91,21 +91,10 @@ img{max-width:100%;height:auto}
   .brand .logo { width: 28px; }
 }
 
-/* Pill logo sizing */
+/* MLD pill replacement logo */
 .pill-logo {
-  height: 22px;       /* adjust if you want it a little bigger/smaller */
+  height: 64px;   /* try 64–80px, tweak to taste */
+  width: auto;    /* keeps proportions */
   vertical-align: middle;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, #ff4d4d, #4d79ff); /* red → blue */
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-.pill-logo {
-  height: 22px;
+  margin-right: 6px; /* space before the text */
 }
