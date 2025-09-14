@@ -1,0 +1,73 @@
+name: DevPulse – fetch trending repos
+
+on:
+  schedule:
+    - cron: '5 0 * * *'   # daily at 00:05 UTC
+  workflow_dispatch:      # allow manual run
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-trending:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate repos.json
+        run: |
+          node - <<'NODE'
+          import fs from 'fs';
+          const { Octokit } = await import('@octokit/rest');
+
+          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+          // Search: repos created in last 24h, sort by stars desc
+          const since = new Date(Date.now() - 24*60*60*1000).toISOString().slice(0,10);
+          const q = `created:>=${since}`;
+
+          const res = await octokit.request('GET /search/repositories', {
+            q,
+            sort: 'stars',
+            order: 'desc',
+            per_page: 24
+          });
+
+          const items = res.data.items.map(r => ({
+            source: 'GitHub',
+            title: r.full_name,
+            url: r.html_url,
+            description: r.description || '',
+            language: r.language || 'Other',
+            stars: r.stargazers_count,
+            owner: r.owner?.login || '',
+            tags: (r.topics || []).slice(0, 3)
+          }));
+
+          const out = {
+            updated_at: new Date().toISOString(),
+            items
+          };
+
+          fs.mkdirSync('data', { recursive: true });
+          fs.writeFileSync('data/repos.json', JSON.stringify(out, null, 2));
+          console.log('Wrote data/repos.json with', items.length, 'items');
+          NODE
+
+      - name: Commit & push
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "mld-bot"
+            git config user.email "mld-bot@users.noreply.github.com"
+            git add data/repos.json
+            git commit -m "chore(data): update DevPulse repos.json"
+            git push
+          else
+            echo "No changes to commit."
+          fi
