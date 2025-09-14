@@ -1,92 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MLD — Major League Dev | Stimulated Launches</title>
-  <meta name="description" content="A daily dev pulse with bold montage energy — see the hottest repos, posts, and tools in under a minute." />
-  <link rel="preload" as="image" href="assets/rhino-sticker.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MLD — Major League Dev</title>
+  <link rel="icon" href="assets/rhino-sticker.png" />
+  <link rel="preload" href="data/repos.json" as="fetch" crossorigin="anonymous" />
   <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="/">
-      <img class="brand-mark" src="assets/rhino-sticker.png" alt="MLD rhino" />
-      <span class="brand-word">Major League Dev</span>
-    </a>
 
-    <nav class="nav">
-      <a href="#pulse" class="nav-link">Dev Pulse</a>
-      <a href="#about" class="nav-link">About</a>
-    </nav>
-
-    <div class="header-ctas">
-      <a class="btn btn-ghost" id="cta-trending" href="#pulse">See What's Trending</a>
-      <a class="btn btn-tele" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram</a>
-      <button class="btn btn-matrix" id="matrixToggle" aria-pressed="false">Matrix: OFF</button>
+  <!-- Header -->
+  <header class="nav">
+    <div class="nav-left">
+      <img class="nav-mark" src="assets/rhino-sticker.png" alt="MLD mark" />
+      <a class="brand" href="./">Major League Dev</a>
     </div>
+
+    <nav class="nav-right">
+      <a class="nav-link" href="#pulse">Dev Pulse</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="btn cta" href="#pulse">See What’s Trending</a>
+      <a class="btn tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram</a>
+    </nav>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO (no matrix; clean gradient) -->
   <section class="hero">
-    <div class="hero-media">
-      <canvas id="matrixCanvas" class="matrix-canvas" aria-hidden="true"></canvas>
-    </div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1 class="headline">
+          <span class="stim">Stimulated</span> Launches
+        </h1>
+        <p class="sub">
+          A daily dev pulse with bold red/white/blue montage energy — see the hottest repos, posts, and tools in under a minute.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#pulse">View Today’s Pulse</a>
+          <a class="btn soft" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
+        </div>
+      </div>
 
-    <div class="hero-content">
-      <h1 class="title">
-        <span class="title-accent">Stimulated</span> Launches
-      </h1>
-      <p class="tagline">
-        A daily dev pulse with bold red/white/blue montage energy — see the hottest repos, posts, and tools in under a minute.
-      </p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#pulse">View Today’s Pulse</a>
+      <!-- Optional lockup on larger screens -->
+      <div class="hero-lockup">
+        <img src="assets/mld-mark.png" alt="MLD lockup" />
       </div>
     </div>
   </section>
 
-  <!-- FILTERS -->
-  <section class="filters wrap">
-    <div class="filter-pills" role="tablist" aria-label="Feed filters">
-      <button class="pill active" data-filter="all" role="tab" aria-selected="true">All</button>
-      <button class="pill" data-filter="Code" role="tab">Code</button>
-      <button class="pill" data-filter="Articles" role="tab">Articles</button>
-      <button class="pill" data-filter="Packages" role="tab">Packages</button>
-    </div>
-  </section>
+  <!-- Category tabs -->
+  <div class="tabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="code">Code</button>
+    <button class="tab" data-filter="articles">Articles</button>
+    <button class="tab" data-filter="packages">Packages</button>
+  </div>
 
   <!-- FEED -->
-  <main class="wrap" id="pulse">
-    <h2 class="section-title">Today’s Dev Pulse</h2>
-    <div id="feed" class="card-grid" aria-live="polite"></div>
-    <div id="feed-empty" class="empty" hidden>
-      Nothing to show (yet). Check back soon.
-    </div>
+  <main id="pulse" class="feed-wrap">
+    <h2>Today’s Dev Pulse</h2>
+    <div id="feed" class="feed"></div>
   </main>
 
-  <!-- JOIN / CTA -->
-  <section class="wrap callout">
-    <div class="callout-copy">
-      <h3>Join the Locker Room</h3>
-      <p>Hype launches, share ideas, and see what top builders are shipping.</p>
+  <!-- Locker Room CTA -->
+  <section class="locker">
+    <div class="card">
+      <div class="locker-copy">
+        <h3>Join the Locker Room</h3>
+        <p>Hype launches, share ideas, and see what top builders are shipping.</p>
+      </div>
+      <a class="btn big tg" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
     </div>
-    <a class="btn btn-tele large" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
   </section>
 
-  <!-- ABOUT -->
-  <section class="wrap about" id="about">
-    <h3>What is MLD?</h3>
-    <p>
-      <strong>Major League Dev</strong> is a social space for developers — a fast, curated pulse of what’s trending,
-      wrapped in a bold montage identity. Check in daily, discover tools worth trying, and plug into a culture that ships.
-    </p>
+  <!-- About -->
+  <section id="about" class="about">
+    <div class="card">
+      <h3>What is MLD?</h3>
+      <p>
+        <strong>Major League Dev</strong> is a social space for developers — a fast, curated pulse of what’s
+        trending, wrapped in a bold montage identity. Check in daily, discover tools worth trying,
+        and plug into a culture that ships.
+      </p>
+    </div>
   </section>
 
-  <footer class="site-footer wrap">
+  <footer class="footer">
     <span>© 2025 Major League Dev</span>
-    <a class="footer-link" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram @majorleaguedev</a>
+    <a href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram @majorleaguedev</a>
   </footer>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
