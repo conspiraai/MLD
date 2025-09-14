@@ -2,83 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MLD — Major League Dev | Stimulated Launches</title>
+  <meta name="description" content="A daily dev pulse with bold montage energy — see the hottest repos, posts, and tools in under a minute." />
+  <link rel="preload" as="image" href="assets/rhino-sticker.png" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="assets/letsbonk-pill.png" />
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <header class="nav">
-    <div class="brand">
-      <img src="assets/mlg-badge.svg" onerror="this.style.display='none'">
-      <span class="logo-text"><b>Major</b> League <b>Dev</b></span>
-    </div>
-    <nav class="links">
-      <a href="#pulse">Dev Pulse</a>
-      <a href="#about">About</a>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <img class="brand-mark" src="assets/rhino-sticker.png" alt="MLD rhino" />
+      <span class="brand-word">Major League Dev</span>
+    </a>
+
+    <nav class="nav">
+      <a href="#pulse" class="nav-link">Dev Pulse</a>
+      <a href="#about" class="nav-link">About</a>
     </nav>
-    <div class="actions">
-      <button id="montageBtn" class="chip">Montage: <span id="montageState">OFF</span></button>
-      <a class="cta" target="_blank" href="https://t.me/majorleaguedev">Join Telegram</a>
+
+    <div class="header-ctas">
+      <a class="btn btn-ghost" id="cta-trending" href="#pulse">See What's Trending</a>
+      <a class="btn btn-tele" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram</a>
+      <button class="btn btn-matrix" id="matrixToggle" aria-pressed="false">Matrix: OFF</button>
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-overlay">
-      <canvas id="rain" aria-hidden="true"></canvas>
-      <div id="stickerStage" class="stage" aria-hidden="true">
-        <!-- Stickers are injected here when Montage Mode is ON -->
-      </div>
+    <div class="hero-media">
+      <canvas id="matrixCanvas" class="matrix-canvas" aria-hidden="true"></canvas>
     </div>
 
     <div class="hero-content">
-      <span class="pill">MLD</span>
-      <h1><span class="stim">Stimulated</span> Launches</h1>
+      <h1 class="title">
+        <span class="title-accent">Stimulated</span> Launches
+      </h1>
       <p class="tagline">
-        A daily dev pulse with bold red/white/blue montage energy —
-        see the hottest repos, posts, and tools in under a minute.
+        A daily dev pulse with bold red/white/blue montage energy — see the hottest repos, posts, and tools in under a minute.
       </p>
-      <a class="primary" href="#pulse">View today’s pulse</a>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#pulse">View Today’s Pulse</a>
+      </div>
     </div>
   </section>
 
-  <!-- Filters -->
-  <div class="tabs">
-    <button class="tab active" data-filter="all">All</button>
-    <button class="tab" data-filter="code">Code</button>
-    <button class="tab" data-filter="articles">Articles</button>
-  </div>
+  <!-- FILTERS -->
+  <section class="filters wrap">
+    <div class="filter-pills" role="tablist" aria-label="Feed filters">
+      <button class="pill active" data-filter="all" role="tab" aria-selected="true">All</button>
+      <button class="pill" data-filter="Code" role="tab">Code</button>
+      <button class="pill" data-filter="Articles" role="tab">Articles</button>
+      <button class="pill" data-filter="Packages" role="tab">Packages</button>
+    </div>
+  </section>
 
-  <!-- Feed -->
-  <main id="pulse" class="feed">
-    <h2>Today’s Dev Pulse</h2>
-    <div id="cards" class="grid" aria-live="polite"></div>
-    <div id="empty" class="empty" hidden>Nothing yet. Try “All”.</div>
+  <!-- FEED -->
+  <main class="wrap" id="pulse">
+    <h2 class="section-title">Today’s Dev Pulse</h2>
+    <div id="feed" class="card-grid" aria-live="polite"></div>
+    <div id="feed-empty" class="empty" hidden>
+      Nothing to show (yet). Check back soon.
+    </div>
   </main>
 
-  <!-- Community -->
-  <section class="locker">
-    <div class="panel">
+  <!-- JOIN / CTA -->
+  <section class="wrap callout">
+    <div class="callout-copy">
       <h3>Join the Locker Room</h3>
       <p>Hype launches, share ideas, and see what top builders are shipping.</p>
-      <a class="primary" target="_blank" href="https://t.me/majorleaguedev">Join Telegram</a>
     </div>
+    <a class="btn btn-tele large" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Join Telegram</a>
   </section>
 
-  <!-- About -->
-  <section id="about" class="about">
+  <!-- ABOUT -->
+  <section class="wrap about" id="about">
     <h3>What is MLD?</h3>
-    <p><b>Major League Dev</b> is a social space for developers — a fast, curated pulse of what’s
-       trending, wrapped in a bold montage identity. Check in daily, discover tools worth trying,
-       and plug into a culture that ships.</p>
+    <p>
+      <strong>Major League Dev</strong> is a social space for developers — a fast, curated pulse of what’s trending,
+      wrapped in a bold montage identity. Check in daily, discover tools worth trying, and plug into a culture that ships.
+    </p>
   </section>
 
-  <footer class="foot">
-    <small>© 2025 Major League Dev</small>
-    <a target="_blank" href="https://t.me/majorleaguedev">Telegram @majorleaguedev</a>
+  <footer class="site-footer wrap">
+    <span>© 2025 Major League Dev</span>
+    <a class="footer-link" href="https://t.me/majorleaguedev" target="_blank" rel="noopener">Telegram @majorleaguedev</a>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
