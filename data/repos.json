@@ -1,0 +1,25 @@
+{
+  "updated_at": "2025-09-13T00:00:00Z",
+  "items": [
+    {
+      "source": "GitHub",
+      "title": "rust-router-x",
+      "url": "https://github.com/example/rust-router-x",
+      "description": "Zero-cost async primitives with a tiny router.",
+      "language": "Rust",
+      "stars": 1240,
+      "owner": "example",
+      "tags": ["backend"]
+    },
+    {
+      "source": "GitHub",
+      "title": "tiny-sql",
+      "url": "https://github.com/example/tiny-sql",
+      "description": "3 kB SQL wrapper with template-tag queries.",
+      "language": "TypeScript",
+      "stars": 980,
+      "owner": "tiny-org",
+      "tags": ["db", "npm"]
+    }
+  ]
+}
