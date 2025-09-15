@@ -11,15 +11,18 @@
   <header class="nav">
     <div class="brand">
       <img src="assets/rhino.png" alt="MLD logo" class="logo">
-<span class="logo-text"><b>Major</b> League <b>Dev</b></span>
+      <span class="logo-text"><b>Major</b> League <b>Dev</b></span>
     </div>
     <nav class="links">
-      <a href="#pulse">Dev Pulse</a>
+      <a href="#pulse">Pulse</a>
       <a href="#about">About</a>
+      <!-- Optional future link:
+      <a href="#roadmap">Roadmap</a>
+      -->
     </nav>
     <div class="actions">
-      <button id="montageBtn" class="chip">Montage: <span id="montageState">OFF</span></button>
-      <a class="cta" target="_blank" href="https://t.me/majorleaguedev">Join Telegram</a>
+      <button id="montageBtn" class="chip">Montage Mode: <span id="montageState">OFF</span></button>
+      <a class="cta" target="_blank" href="https://t.me/majorleaguedev">Locker Room</a>
     </div>
   </header>
 
@@ -33,35 +36,38 @@
     </div>
 
     <div class="hero-content">
-     <img src="assets/mld-logo.png" alt="MLD logo" class="pill-logo">
+      <img src="assets/mld-logo.png" alt="MLD logo" class="pill-logo">
       <h1><span class="stim">Stimulated</span> Launches</h1>
       <p class="tagline">
-        A daily dev pulse with bold red/white/blue montage energy —
-        see the hottest repos, posts, and tools in under a minute.
+        A home for devs with a daily Pulse — see the hottest repos, posts, and tools in an instant.
       </p>
-      <a class="primary" href="#pulse">View today’s pulse</a>
+      <a class="primary" href="#pulse">View today’s Pulse</a>
     </div>
   </section>
 
   <!-- Filters -->
   <div class="tabs">
-    <button class="tab active" data-filter="all">All</button>
-    <button class="tab" data-filter="code">Code</button>
-    <button class="tab" data-filter="articles">Articles</button>
+    <button class="tab active" data-filter="all">Everything</button>
+    <button class="tab" data-filter="code">Repos</button>
+    <button class="tab" data-filter="articles">Posts &amp; Articles</button>
   </div>
 
   <!-- Feed -->
   <main id="pulse" class="feed">
-    <h2>Today’s Dev Pulse</h2>
+    <h2>Today’s Pulse</h2>
     <div id="cards" class="grid" aria-live="polite"></div>
-    <div id="empty" class="empty" hidden>Nothing yet. Try “All”.</div>
+    <div id="empty" class="empty" hidden>Nothing yet. Try “Everything”.</div>
   </main>
 
   <!-- Community -->
   <section class="locker">
     <div class="panel">
       <h3>Join the Locker Room</h3>
-      <p>Hype launches, share ideas, and see what top builders are shipping.</p>
+      <p>
+        Our Telegram is where the future of Major League Dev shows up first —
+        previews, WIP demos, early invites, hype launches, and a space to share ideas
+        with top builders.
+      </p>
       <a class="primary" target="_blank" href="https://t.me/majorleaguedev">Join Telegram</a>
     </div>
   </section>
@@ -69,7 +75,7 @@
   <!-- About -->
   <section id="about" class="about">
     <h3>What is MLD?</h3>
-    <p><b>Major League Dev</b> is a social space for developers — a fast, curated pulse of what’s
+    <p><b>Major League Dev</b> is a home for developers — a fast, curated pulse of what’s
        trending, wrapped in a bold montage identity. Check in daily, discover tools worth trying,
        and plug into a culture that ships.</p>
   </section>
