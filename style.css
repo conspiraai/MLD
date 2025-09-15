@@ -20,10 +20,20 @@ img{max-width:100%;height:auto}
 }
 .logo-text{background:var(--brand);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
 .brand{display:flex;gap:10px;align-items:center}
-.links a{margin:0 10px;color:#d3def0}
+.links a{margin:0 12px;color:#dbe6f7;font-weight:600}
+.links a:hover{color:#ffffff}
 .actions{display:flex;gap:10px;align-items:center}
-.chip{padding:8px 12px;border-radius:12px;background:var(--chip);color:#101418;font-weight:700}
-.cta{padding:10px 14px;border-radius:12px;background:var(--grad);color:#101418;font-weight:800}
+.chip{padding:8px 14px;border-radius:12px;background:var(--chip);color:#101418;font-weight:700;letter-spacing:.25px}
+.cta{
+  padding:10px 18px;
+  border-radius:12px;
+  background:var(--grad);
+  color:#101418;
+  font-weight:800;
+  white-space:nowrap;
+  letter-spacing:.2px;
+}
+.cta:hover{transform:translateY(-1px)}
 
 .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--ring)}
 .hero-overlay{position:absolute;inset:0}
@@ -38,12 +48,29 @@ img{max-width:100%;height:auto}
 .primary{display:inline-block;margin-top:10px;padding:12px 16px;border-radius:14px;background:var(--grad);color:#101418;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .primary:hover{transform:translateY(-1px)}
 
-.tabs{display:flex;gap:10px;max-width:1100px;margin:22px auto 0;padding:0 18px}
-.tab{padding:8px 12px;border-radius:12px;background:#111827;color:#cfe1f2;border:1px solid var(--ring)}
+.tabs{
+  display:flex;
+  gap:10px;
+  max-width:1100px;
+  margin:22px auto 0;
+  padding:0 18px;
+  justify-content:center;
+  flex-wrap:wrap;
+  row-gap:10px;
+}
+.tab{
+  padding:8px 14px;
+  border-radius:12px;
+  background:#111827;
+  color:#cfe1f2;
+  border:1px solid var(--ring);
+  line-height:1.2;
+  min-width:fit-content;
+}
 .tab.active{background:var(--chip);color:#0b0f14;font-weight:800}
 
 .feed{max-width:1100px;margin:10px auto 0;padding:0 18px}
-.feed h2{font-size:clamp(22px,3vw,32px)}
+.feed h2{font-size:clamp(22px,3vw,28px);font-weight:800;letter-spacing:.2px;margin:16px 0 12px;color:#fff}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .card{background:var(--panel);border:1px solid var(--ring);border-radius:18px;padding:16px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
 .card .src{display:flex;align-items:center;gap:8px;color:#9fc0ff;font-weight:700;margin-bottom:8px}
@@ -57,8 +84,29 @@ img{max-width:100%;height:auto}
 
 .locker,.about{max-width:1100px;margin:28px auto;padding:0 18px}
 .panel{background:var(--panel);border:1px solid var(--ring);border-radius:18px;padding:18px}
+.locker .panel p{margin:8px 0 12px}
+.locker .panel .primary{margin-top:2px}
+
 .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:1100px;margin:40px auto;padding:18px;color:#8ea3b5;border-top:1px solid var(--ring)}
+
 @media (max-width:680px){
   .links{display:none}
   .stage img{width:64px}
 }
+@media (max-width:520px){
+  .brand .logo{width:28px}
+}
+
+/* --- MLD brand header lockup --- */
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{width:32px;height:auto;display:block}
+.logo-text{
+  background:var(--brand, linear-gradient(90deg,#ff616e,#99b4ff));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  font-weight:700;
+  letter-spacing:.2px;
+  line-height:1;
+}
+.pill-logo{height:64px;width:auto;vertical-align:middle;margin-right:6px}
